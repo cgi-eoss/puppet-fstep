@@ -1,0 +1,14 @@
+---
+fstep::repo::location: 'file:///path/to/repo'
+fstep::portal::tls_cert: |
+  portal
+  tls
+  cert
+fstep::portal::tls_key: |
+  portal
+  tls
+  key
+fstep::portal::shibboleth::idp_cert: |
+  idp
+  tls
+  cert

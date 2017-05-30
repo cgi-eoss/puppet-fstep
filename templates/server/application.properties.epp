@@ -1,0 +1,118 @@
+<%- |
+    String $logging_config_file,
+
+    Integer $server_port,
+    Integer $grpc_port,
+
+    String $serviceregistry_url,
+
+    String $jdbc_driver,
+    String $jdbc_url,
+    String $jdbc_user,
+    String $jdbc_password,
+    String $jdbc_data_source_class_name,
+
+    String $api_base_path,
+    String $api_username_request_header,
+    String $api_email_request_header,
+    String $api_security_mode,
+
+    String $graylog_api_url,
+    String $graylog_api_username,
+    String $graylog_api_password,
+
+    String $gui_url_pattern,
+
+    String $output_products_dir,
+    String $refdata_dir,
+
+    Boolean $geoserver_enabled,
+    String $geoserver_url,
+    String $geoserver_external_url,
+    String $geoserver_username,
+    String $geoserver_password,
+
+    Boolean $resto_enabled,
+    String $resto_url,
+    String $resto_external_products_collection,
+    String $resto_external_products_model,
+    String $resto_refdata_collection,
+    String $resto_refdata_model,
+    String $resto_output_products_collection,
+    String $resto_output_products_model,
+    String $resto_username,
+    String $resto_password,
+
+    Hash $custom_properties
+| -%>
+# Managed by Puppet
+# FS-TEP Server service configuration
+
+spring.application.name=FS-TEP Server
+
+logging.config=<%= $logging_config_file %>
+
+# Server config
+server.port=<%= $server_port %>
+server.compression.enabled=true
+server.compression.mime-types=text/html,text/xml,text/plain,text/css,application/json,application/hal+json
+
+grpc.port=<%= $grpc_port %>
+
+management.security.roles=ADMIN
+
+# Service registry configuration
+eureka.instance.statusPageUrlPath=${management.contextPath}/info
+eureka.instance.healthCheckUrlPath=${management.contextPath}/health
+eureka.instance.metadataMap.grpcPort=${grpc.port}
+
+eureka.client.healthcheck.enabled=true
+eureka.client.serviceUrl.defaultZone=<%= $serviceregistry_url %>
+
+# Database connection
+spring.datasource.url=<%= $jdbc_url %>
+spring.datasource.username=<%= $jdbc_user %>
+spring.datasource.password=<%= $jdbc_password %>
+spring.datasource.driver-class-name=<%= $jdbc_driver %>
+
+flyway.enabled=true
+flyway.locations=db/migration/{vendor}
+spring.jpa.hibernate.ddl-auto=validate
+
+# API configuration
+fstep.api.basePath=<%= $api_base_path %>
+fstep.api.security.username-request-header=<%= $api_username_request_header %>
+fstep.api.security.email-request-header=<%= $api_email_request_header %>
+fstep.api.security.mode=<%= $api_security_mode %>
+
+# Graylog access configuration
+fstep.api.logs.graylogApiUrl=<%= $graylog_api_url %>
+fstep.api.logs.username=<%= $graylog_api_username %>
+fstep.api.logs.password=<%= $graylog_api_password %>
+
+# Pattern for building GUI application URLs
+fstep.orchestrator.gui.urlPattern=<%= $gui_url_pattern %>
+
+# Catalogue service configuration
+fstep.catalogue.outputProducts.baseDir=<%= $output_products_dir %>
+fstep.catalogue.refData.baseDir=<%= $refdata_dir %>
+fstep.catalogue.geoserver.enabled=<%= $geoserver_enabled %>
+fstep.catalogue.geoserver.url=<%= $geoserver_url %>
+fstep.catalogue.geoserver.externalUrl=<%= $geoserver_external_url %>
+fstep.catalogue.geoserver.username=<%= $geoserver_username %>
+fstep.catalogue.geoserver.password=<%= $geoserver_password %>
+fstep.catalogue.resto.enabled=<%= $resto_enabled %>
+fstep.catalogue.resto.url=<%= $resto_url %>
+fstep.catalogue.resto.collection.externalProducts=<%= $resto_external_products_collection %>
+fstep.catalogue.resto.collection.externalProductsModel=<%= $resto_external_products_model %>
+fstep.catalogue.resto.collection.refData=<%= $resto_refdata_collection %>
+fstep.catalogue.resto.collection.refDataModel=<%= $resto_refdata_model %>
+fstep.catalogue.resto.collection.outputProducts=<%= $resto_output_products_collection %>
+fstep.catalogue.resto.collection.outputProductsModel=<%= $resto_output_products_model %>
+fstep.catalogue.resto.username=<%= $resto_username %>
+fstep.catalogue.resto.password=<%= $resto_password %>
+
+# Custom manually-appended configuration properties
+<% $custom_properties.each | $key, $value | { %>
+<%= $key %>=<%= $value %>
+<% } -%>
