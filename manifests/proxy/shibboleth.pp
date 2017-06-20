@@ -1,4 +1,4 @@
-class fstep::proxy::shibboleth (
+class ftep::proxy::shibboleth (
   $service_ensure                   = 'running',
   $service_enable                   = true,
 
@@ -7,8 +7,8 @@ class fstep::proxy::shibboleth (
 
   $clock_skew                       = 180,
 
-  $sp_id                            = 'https://foodsecurity-tep.eo.esa.int/shibboleth',
-  $home_url                         = 'https://foodsecurity-tep.eo.esa.int/',
+  $sp_id                            = 'https://forestry-tep.eo.esa.int/shibboleth',
+  $home_url                         = 'https://forestry-tep.eo.esa.int/',
   $app_defaults_signing             = 'false',
   $app_defaults_encryption          = 'false',
   $app_defaults_remote_user         = 'Eosso-Person-commonName',
@@ -20,15 +20,15 @@ class fstep::proxy::shibboleth (
   $idp_scope                        = 'evo-pdgs.com',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
-      'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
+      'location' => 'https://forestry-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
   ],
   $sp_slo_service                   = {
     'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-    'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SLO/Redirect'
+    'location' => 'https://forestry-tep.eo.esa.int/Shibboleth.sso/SLO/Redirect'
   },
   $sp_name_id_formats               = ['urn:oasis:names:tc:SAML:2.0:nameid-format:transient'],
-  $org_name                         = 'fs-tep',
-  $org_display_name                 = 'FoodSecurity TEP',
+  $org_name                         = 'f-tep',
+  $org_display_name                 = 'Forestry TEP',
   $attribute_map                    = [
     { 'name' => 'urn:mace:dir:attribute-def:cn', 'id' => 'Eosso-Person-commonName' },
     { 'name' => 'urn:mace:dir:attribute-def:mail', 'id' => 'Eosso-Person-Email' }
@@ -73,7 +73,7 @@ class fstep::proxy::shibboleth (
 
   ensure_packages(['shibboleth'], {
     ensure => latest,
-    tag    => 'fstep',
+    tag    => 'ftep',
   })
 
   ensure_resource(service, 'shibd', {
@@ -90,7 +90,7 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'shibd',
     group   => 'shibd',
-    content => $fstep::proxy::tls_cert,
+    content => $ftep::proxy::tls_cert,
     require => Package['shibboleth'],
     notify  => Service['shibd'],
   }
@@ -100,7 +100,7 @@ class fstep::proxy::shibboleth (
     mode    => '0600',
     owner   => 'shibd',
     group   => 'shibd',
-    content => $fstep::proxy::tls_key,
+    content => $ftep::proxy::tls_key,
     require => Package['shibboleth'],
     notify  => Service['shibd'],
   }
@@ -110,7 +110,7 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => epp('fstep/proxy/shibboleth/shibboleth2.xml.epp', {
+    content => epp('ftep/proxy/shibboleth/shibboleth2.xml.epp', {
       'clock_skew'               => $clock_skew,
       'sp_id'                    => $sp_id,
       'home_url'                 => $home_url,
@@ -136,7 +136,7 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => epp('fstep/proxy/shibboleth/attribute-policy.xml.epp', { }),
+    content => epp('ftep/proxy/shibboleth/attribute-policy.xml.epp', { }),
     require => Package['shibboleth'],
   }
 
@@ -145,7 +145,7 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => epp('fstep/proxy/shibboleth/attribute-map.xml.epp', {
+    content => epp('ftep/proxy/shibboleth/attribute-map.xml.epp', {
       'attributes' => $attribute_map,
     }),
     require => Package['shibboleth'],
@@ -164,9 +164,9 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => epp('fstep/proxy/shibboleth/sp-metadata.xml.epp', {
+    content => epp('ftep/proxy/shibboleth/sp-metadata.xml.epp', {
       'sp_id'                       => $sp_id,
-      'sp_cert'                     => $fstep::proxy::tls_cert,
+      'sp_cert'                     => $ftep::proxy::tls_cert,
       'assertion_consumer_services' => $sp_assertion_consumer_services,
       'slo_service'                 => $sp_slo_service,
       'name_id_formats'             => $sp_name_id_formats,
@@ -182,7 +182,7 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
-    content => epp('fstep/proxy/shibboleth/idp-metadata.xml.epp', {
+    content => epp('ftep/proxy/shibboleth/idp-metadata.xml.epp', {
       'idp_id'                       => $idp_id,
       'idp_scope'                    => $idp_scope,
       'idp_cert'                     => $idp_cert,

@@ -1,4 +1,4 @@
-class fstep::monitor::grafana (
+class ftep::monitor::grafana (
   $db_name      = 'grafana',
   $db_username  = 'grafanauser',
   $db_password  = 'grafanapass',
@@ -8,7 +8,7 @@ class fstep::monitor::grafana (
 
   require ::epel
 
-  $real_port = pick($port, $fstep::globals::grafana_port)
+  $real_port = pick($port, $ftep::globals::grafana_port)
 
   class { 'grafana':
     cfg => {

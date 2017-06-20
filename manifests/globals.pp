@@ -1,8 +1,8 @@
 # Class for setting cross-class global overrides.
-class fstep::globals (
+class ftep::globals (
   $manage_package_repo              = true,
 
-  # Base URL for fstep::proxy
+  # Base URL for ftep::proxy
   $base_url                         = "http://${facts['fqdn']}",
 
   # Context paths for reverse proxy
@@ -16,44 +16,44 @@ class fstep::globals (
   $context_path_eureka              = '/eureka',
 
   # System user
-  $user                             = 'fstep',
-  $group                            = 'fstep',
+  $user                             = 'ftep',
+  $group                            = 'ftep',
 
   # Hostnames and IPs for components
-  $db_hostname                      = 'fstep-db',
-  $drupal_hostname                  = 'fstep-drupal',
-  $geoserver_hostname               = 'fstep-geoserver',
-  $proxy_hostname                   = 'fstep-proxy',
-  $webapp_hostname                  = 'fstep-webapp',
-  $wps_hostname                     = 'fstep-wps',
-  $server_hostname                  = 'fstep-server',
-  $monitor_hostname                 = 'fstep-monitor',
-  $resto_hostname                   = 'fstep-resto',
-  $default_gui_hostname             = 'fstep-worker',
+  $db_hostname                      = 'ftep-db',
+  $drupal_hostname                  = 'ftep-drupal',
+  $geoserver_hostname               = 'ftep-geoserver',
+  $proxy_hostname                   = 'ftep-proxy',
+  $webapp_hostname                  = 'ftep-webapp',
+  $wps_hostname                     = 'ftep-wps',
+  $server_hostname                  = 'ftep-server',
+  $monitor_hostname                 = 'ftep-monitor',
+  $resto_hostname                   = 'ftep-resto',
+  $default_gui_hostname             = 'ftep-worker',
 
   $hosts_override                   = { },
 
   # All classes should share this database config, or override it if necessary
-  $fstep_db_name                     = 'fstep',
-  $fstep_db_v2_name                  = 'fstep_v2',
-  $fstep_db_username                 = 'fstepuser',
-  $fstep_db_password                 = 'fsteppass',
-  $fstep_db_resto_name               = 'fstep_resto',
-  $fstep_db_resto_username           = 'fstepresto',
-  $fstep_db_resto_password           = 'fsteprestopass',
-  $fstep_db_resto_su_username        = 'fsteprestoadmin',
-  $fstep_db_resto_su_password        = 'fsteprestoadminpass',
-  $fstep_db_zoo_name                 = 'fstep_zoo',
-  $fstep_db_zoo_username             = 'fstepzoo',
-  $fstep_db_zoo_password             = 'fstepzoopass',
+  $ftep_db_name                     = 'ftep',
+  $ftep_db_v2_name                  = 'ftep_v2',
+  $ftep_db_username                 = 'ftepuser',
+  $ftep_db_password                 = 'fteppass',
+  $ftep_db_resto_name               = 'ftep_resto',
+  $ftep_db_resto_username           = 'ftepresto',
+  $ftep_db_resto_password           = 'fteprestopass',
+  $ftep_db_resto_su_username        = 'fteprestoadmin',
+  $ftep_db_resto_su_password        = 'fteprestoadminpass',
+  $ftep_db_zoo_name                 = 'ftep_zoo',
+  $ftep_db_zoo_username             = 'ftepzoo',
+  $ftep_db_zoo_password             = 'ftepzoopass',
 
   # SSO configuration
   $username_request_header          = 'REMOTE_USER',
   $email_request_header             = 'REMOTE_EMAIL',
 
   # Eureka config
-  $serviceregistry_user             = 'fstepeureka',
-  $serviceregistry_pass             = 'fstepeurekapass',
+  $serviceregistry_user             = 'ftepeureka',
+  $serviceregistry_pass             = 'ftepeurekapass',
 
   # App server config for HTTP and gRPC
   $serviceregistry_application_port = 8761,
@@ -67,12 +67,12 @@ class fstep::globals (
   # Geoserver config
   $geoserver_port                   = 9080,
   $geoserver_stopport               = 9079,
-  $geoserver_fstep_username          = 'fstepgeoserver',
-  $geoserver_fstep_password          = 'fstepgeoserverpass',
+  $geoserver_ftep_username          = 'ftepgeoserver',
+  $geoserver_ftep_password          = 'ftepgeoserverpass',
 
   # Resto config
-  $resto_fstep_username              = 'fstepresto',
-  $resto_fstep_password              = 'fsteprestopass',
+  $resto_ftep_username              = 'ftepresto',
+  $resto_ftep_password              = 'fteprestopass',
 
   # monitor config
   $grafana_port                     = 8089,
@@ -86,8 +86,8 @@ class fstep::globals (
   $graylog_context_path             = '/logs',
   $graylog_api_path                 = '/logs/api',
   $graylog_gelf_tcp_port            = 12201,
-  $graylog_api_fstep_username        = 'fstepgraylog',
-  $graylog_api_fstep_password        = 'fstepgraylogpass',
+  $graylog_api_ftep_username        = 'ftepgraylog',
+  $graylog_api_ftep_password        = 'ftepgraylogpass',
 
   $enable_log4j2_graylog            = false,
 ) {
@@ -97,6 +97,6 @@ class fstep::globals (
 
   # Setup of the repo only makes sense globally, so we are doing this here.
   if($manage_package_repo) {
-    require ::fstep::repo
+    require ::ftep::repo
   }
 }

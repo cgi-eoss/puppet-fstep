@@ -1,11 +1,11 @@
-# fstep
+# ftep
 
 #### Table of Contents
 
 1. [Description](#description)
-1. [Setup - The basics of getting started with fstep](#setup)
+1. [Setup - The basics of getting started with ftep](#setup)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with fstep](#beginning-with-fstep)
+    * [Beginning with ftep](#beginning-with-ftep)
 1. [Usage - Configuration options and additional functionality](#usage)
 1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
@@ -13,12 +13,12 @@
 
 ## Description
 
-The fstep module lets you use Puppet to install and configure the FoodSecurity TEP
+The ftep module lets you use Puppet to install and configure the Forestry TEP
 service infrastructure.
 
-[FS-TEP](https://github.com/cgi-eoss/fstep) is an open platform for the food security
+[F-TEP](https://github.com/cgi-eoss/ftep) is an open platform for the forestry
 community to access and exploit EO data. This Puppet module may be used to
-set up the various components including the community hub, the FS-TEP webapp,
+set up the various components including the community hub, the F-TEP webapp,
 and the processing manager.
 
 **Note:** Currently this module is only compatible with CentOS 6.
@@ -30,47 +30,47 @@ and the processing manager.
 ### Setup Requirements
 
 * This module may manage a yum repository for package installation with the
-  parameter `fstep::repo::location`. This may be the URL of a hosted repo, or
+  parameter `ftep::repo::location`. This may be the URL of a hosted repo, or
   an on-disk path to a static repo (e.g. built with `createrepo`) in the format
-  `file:///path/to/fsteprepo/$releasever/local/$basearch`. The latter is useful
+  `file:///path/to/fteprepo/$releasever/local/$basearch`. The latter is useful
   for standalone `puppet apply` deployments.
 
 ## Usage
 
-The fstep module may be used to install the FS-TEP components individually by the
+The ftep module may be used to install the F-TEP components individually by the
 classes:
-* `fstep::db`
-* `fstep::drupal`
-* `fstep::geoserver`
-* `fstep::monitor`
-* `fstep::proxy`
-* `fstep::resto`
-* `fstep::server`
-* `fstep::webapp`
-* `fstep::worker`
-* `fstep::wps`
+* `ftep::db`
+* `ftep::drupal`
+* `ftep::geoserver`
+* `ftep::monitor`
+* `ftep::proxy`
+* `ftep::resto`
+* `ftep::server`
+* `ftep::webapp`
+* `ftep::worker`
+* `ftep::wps`
 
-Configuration parameters shared by these classes may be set via `fstep::globals`.
+Configuration parameters shared by these classes may be set via `ftep::globals`.
 
 Interoperability between the components is managed via hostnames, which may be
-resolved at runtime via DNS or manually, by overriding the `fstep::globals::hosts_override`
-hash. See the `fstep::globals` class for available parameters, and the specific
+resolved at runtime via DNS or manually, by overriding the `ftep::globals::hosts_override`
+hash. See the `ftep::globals` class for available parameters, and the specific
 component classes for how these are used, for example in `apache::vhost`
 resources.
 
 ### Manual configuration actions
 
-Some components of FS-TEP are not fully instantiated by this Puppet module.
-Following the automated provisioning of an FS-TEP environment, some manual steps
+Some components of F-TEP are not fully instantiated by this Puppet module.
+Following the automated provisioning of an F-TEP environment, some manual steps
 must be carried out to ensure full functionality of some components. These may
 be omitted when some functionality is not required.
 
 The following list describes some of these possible post-installation actions:
-* `fstep::drupal`: Drupal site initialisation &amp; content restoration
-* `fstep::monitor`: Creation of graylog inputs &amp; dashboards
-* `fstep::monitor`: Creation of grafana dashboards
-* `fstep::worker`: Installation of downloader credentials
-* `fstep::wps`: Restoration &amp; publishing of default FS-TEP services
+* `ftep::drupal`: Drupal site initialisation &amp; content restoration
+* `ftep::monitor`: Creation of graylog inputs &amp; dashboards
+* `ftep::monitor`: Creation of grafana dashboards
+* `ftep::worker`: Installation of downloader credentials
+* `ftep::wps`: Restoration &amp; publishing of default F-TEP services
 
 
 ## Limitations

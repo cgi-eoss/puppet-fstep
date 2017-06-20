@@ -46,9 +46,9 @@
     Hash $custom_properties
 | -%>
 # Managed by Puppet
-# FS-TEP Server service configuration
+# F-TEP Server service configuration
 
-spring.application.name=FS-TEP Server
+spring.application.name=F-TEP Server
 
 logging.config=<%= $logging_config_file %>
 
@@ -80,37 +80,37 @@ flyway.locations=db/migration/{vendor}
 spring.jpa.hibernate.ddl-auto=validate
 
 # API configuration
-fstep.api.basePath=<%= $api_base_path %>
-fstep.api.security.username-request-header=<%= $api_username_request_header %>
-fstep.api.security.email-request-header=<%= $api_email_request_header %>
-fstep.api.security.mode=<%= $api_security_mode %>
+ftep.api.basePath=<%= $api_base_path %>
+ftep.api.security.username-request-header=<%= $api_username_request_header %>
+ftep.api.security.email-request-header=<%= $api_email_request_header %>
+ftep.api.security.mode=<%= $api_security_mode %>
 
 # Graylog access configuration
-fstep.api.logs.graylogApiUrl=<%= $graylog_api_url %>
-fstep.api.logs.username=<%= $graylog_api_username %>
-fstep.api.logs.password=<%= $graylog_api_password %>
+ftep.api.logs.graylogApiUrl=<%= $graylog_api_url %>
+ftep.api.logs.username=<%= $graylog_api_username %>
+ftep.api.logs.password=<%= $graylog_api_password %>
 
 # Pattern for building GUI application URLs
-fstep.orchestrator.gui.urlPattern=<%= $gui_url_pattern %>
+ftep.orchestrator.gui.urlPattern=<%= $gui_url_pattern %>
 
 # Catalogue service configuration
-fstep.catalogue.outputProducts.baseDir=<%= $output_products_dir %>
-fstep.catalogue.refData.baseDir=<%= $refdata_dir %>
-fstep.catalogue.geoserver.enabled=<%= $geoserver_enabled %>
-fstep.catalogue.geoserver.url=<%= $geoserver_url %>
-fstep.catalogue.geoserver.externalUrl=<%= $geoserver_external_url %>
-fstep.catalogue.geoserver.username=<%= $geoserver_username %>
-fstep.catalogue.geoserver.password=<%= $geoserver_password %>
-fstep.catalogue.resto.enabled=<%= $resto_enabled %>
-fstep.catalogue.resto.url=<%= $resto_url %>
-fstep.catalogue.resto.collection.externalProducts=<%= $resto_external_products_collection %>
-fstep.catalogue.resto.collection.externalProductsModel=<%= $resto_external_products_model %>
-fstep.catalogue.resto.collection.refData=<%= $resto_refdata_collection %>
-fstep.catalogue.resto.collection.refDataModel=<%= $resto_refdata_model %>
-fstep.catalogue.resto.collection.outputProducts=<%= $resto_output_products_collection %>
-fstep.catalogue.resto.collection.outputProductsModel=<%= $resto_output_products_model %>
-fstep.catalogue.resto.username=<%= $resto_username %>
-fstep.catalogue.resto.password=<%= $resto_password %>
+ftep.catalogue.outputProducts.baseDir=<%= $output_products_dir %>
+ftep.catalogue.refData.baseDir=<%= $refdata_dir %>
+ftep.catalogue.geoserver.enabled=<%= $geoserver_enabled %>
+ftep.catalogue.geoserver.url=<%= $geoserver_url %>
+ftep.catalogue.geoserver.externalUrl=<%= $geoserver_external_url %>
+ftep.catalogue.geoserver.username=<%= $geoserver_username %>
+ftep.catalogue.geoserver.password=<%= $geoserver_password %>
+ftep.catalogue.resto.enabled=<%= $resto_enabled %>
+ftep.catalogue.resto.url=<%= $resto_url %>
+ftep.catalogue.resto.collection.externalProducts=<%= $resto_external_products_collection %>
+ftep.catalogue.resto.collection.externalProductsModel=<%= $resto_external_products_model %>
+ftep.catalogue.resto.collection.refData=<%= $resto_refdata_collection %>
+ftep.catalogue.resto.collection.refDataModel=<%= $resto_refdata_model %>
+ftep.catalogue.resto.collection.outputProducts=<%= $resto_output_products_collection %>
+ftep.catalogue.resto.collection.outputProductsModel=<%= $resto_output_products_model %>
+ftep.catalogue.resto.username=<%= $resto_username %>
+ftep.catalogue.resto.password=<%= $resto_password %>
 
 # Custom manually-appended configuration properties
 <% $custom_properties.each | $key, $value | { %>

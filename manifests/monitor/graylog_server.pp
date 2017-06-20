@@ -1,4 +1,4 @@
-class fstep::monitor::graylog_server (
+class ftep::monitor::graylog_server (
   $db_secret    = undef,
   $db_sha256    = undef,
   $db_bind_ip   = '127.0.0.1',
@@ -10,12 +10,12 @@ class fstep::monitor::graylog_server (
 
   require ::epel
 
-  contain ::fstep::common::java
+  contain ::ftep::common::java
 
-  $real_db_secret = pick($db_secret, $fstep::globals::graylog_secret)
-  $real_db_sha256 = pick($db_sha256, $fstep::globals::graylog_sha256)
-  $real_listen_port = pick($listen_port, $fstep::globals::graylog_port)
-  $real_context_path = pick($context_path, $fstep::globals::graylog_context_path)
+  $real_db_secret = pick($db_secret, $ftep::globals::graylog_secret)
+  $real_db_sha256 = pick($db_sha256, $ftep::globals::graylog_sha256)
+  $real_listen_port = pick($listen_port, $ftep::globals::graylog_port)
+  $real_context_path = pick($context_path, $ftep::globals::graylog_context_path)
 
   class { ::mongodb::globals:
     manage_package_repo => true,

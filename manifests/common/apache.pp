@@ -1,4 +1,4 @@
-class fstep::common::apache {
+class ftep::common::apache {
 
   class { ::apache:
     default_vhost => false,
@@ -17,27 +17,27 @@ class fstep::common::apache {
       protocol => 'tcp'
     }
 
-    ::selinux::port { 'fs-tep-server':
+    ::selinux::port { 'f-tep-server':
       context  => 'http_port_t',
-      port     => $fstep::globals::server_application_port,
+      port     => $ftep::globals::server_application_port,
       protocol => 'tcp'
     }
 
-    ::selinux::port { 'fs-tep-worker':
+    ::selinux::port { 'f-tep-worker':
       context  => 'http_port_t',
-      port     => $fstep::globals::worker_application_port,
+      port     => $ftep::globals::worker_application_port,
       protocol => 'tcp'
     }
 
     ::selinux::port { 'grafana':
       context  => 'http_port_t',
-      port     => $fstep::globals::grafana_port,
+      port     => $ftep::globals::grafana_port,
       protocol => 'tcp'
     }
 
     ::selinux::port { 'graylog':
       context  => 'http_port_t',
-      port     => $fstep::globals::graylog_port,
+      port     => $ftep::globals::graylog_port,
       protocol => 'tcp'
     }
   }

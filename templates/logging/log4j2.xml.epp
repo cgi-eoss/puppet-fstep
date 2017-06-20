@@ -1,5 +1,5 @@
 <%- |
-    String $fstep_component,
+    String $ftep_component,
     String $log_level,
 
     String $graylog_server,
@@ -21,7 +21,7 @@
 <% } else { -%>
         <Property name="CONSOLE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p --- [%15.15t] %-40.40c{1.} : %m%n</Property>
 <% } -%>
-        <Property name="FSTEP_COMPONENT"><%= $fstep_component %></Property>
+        <Property name="FTEP_COMPONENT"><%= $ftep_component %></Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
@@ -30,14 +30,14 @@
 <% if $enable_graylog { -%>
         <GELF name="Graylog" server="<%= $graylog_server %>" protocol="<%= $graylog_protocol %>" port="<%= $graylog_port %>" hostName="<%= $graylog_source_hostname %>">
             <PatternLayout pattern="%msg"/>
-            <KeyValuePair key="fstepComponent" value="${sys:FSTEP_COMPONENT}"/>
+            <KeyValuePair key="ftepComponent" value="${sys:FTEP_COMPONENT}"/>
         </GELF>
 <% } -%>
     </Appenders>
     <Loggers>
 <% if $enable_graylog { -%>
-        <!-- Dedicated graylog-only logger for FS-TEP docker container logs, otherwise it just gets dumped on the console -->
-        <Logger name="FSTEP_DOCKER_LOGGER" additivity="false">
+        <!-- Dedicated graylog-only logger for F-TEP docker container logs, otherwise it just gets dumped on the console -->
+        <Logger name="FTEP_DOCKER_LOGGER" additivity="false">
             <AppenderRef ref="Graylog" />
         </Logger>
 <% } -%>

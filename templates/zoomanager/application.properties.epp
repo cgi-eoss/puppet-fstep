@@ -13,9 +13,9 @@
     Hash $custom_properties
 | -%>
 # Managed by Puppet
-# FS-TEP ZOO Manager service configuration
+# F-TEP ZOO Manager service configuration
 
-spring.application.name=FS-TEP ZOO Manager
+spring.application.name=F-TEP ZOO Manager
 
 logging.config=<%= $logging_config_file %>
 
@@ -32,9 +32,9 @@ eureka.client.healthcheck.enabled=true
 eureka.client.serviceUrl.defaultZone=<%= $serviceregistry_url %>
 
 # ZOO Manager configuration
-fstep.zoomanager.zcfg.path=<%= $zcfg_path %>
-fstep.zoomanager.javac.classpath=<%= $javac_classpath %>
-fstep.zoomanager.stub.jarFile=<%= $services_stub_jar %>
+ftep.zoomanager.zcfg.path=<%= $zcfg_path %>
+ftep.zoomanager.javac.classpath=<%= $javac_classpath %>
+ftep.zoomanager.stub.jarFile=<%= $services_stub_jar %>
 
 # Custom manually-appended configuration properties
 <% $custom_properties.each | $key, $value | { %>

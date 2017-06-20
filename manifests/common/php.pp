@@ -1,4 +1,4 @@
-class fstep::common::php {
+class ftep::common::php {
 
   # Repo for updated PHP packages
   ensure_resource(yumrepo, 'webtatic', {

@@ -1,9 +1,9 @@
-class fstep::db(
+class ftep::db(
   $trust_local_network = false,
 ) {
 
-  require ::fstep::globals
+  require ::ftep::globals
 
-  contain ::fstep::db::postgresql
+  contain ::ftep::db::postgresql
 
 }

@@ -1,9 +1,9 @@
-# FS-TEP package repository
-class fstep::repo::fstep {
-  ensure_resource(yumrepo, 'fstep', {
+# F-TEP package repository
+class ftep::repo::ftep {
+  ensure_resource(yumrepo, 'ftep', {
     ensure   => 'present',
-    descr    => 'FS-TEP',
-    baseurl  => $fstep::repo::location,
+    descr    => 'F-TEP',
+    baseurl  => $ftep::repo::location,
     enabled  => 1,
     gpgcheck => 0,
   })

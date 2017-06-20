@@ -1,4 +1,4 @@
-class fstep::db::flyway (
+class ftep::db::flyway (
   $version            = '4.1.2',
   $repo               = 'https://repo1.maven.org/maven2',
   $group_id           = 'org/flywaydb',
@@ -11,9 +11,9 @@ class fstep::db::flyway (
   $install_dir        = '/opt',
 ) {
 
-  require ::fstep::globals
+  require ::ftep::globals
 
-  contain ::fstep::common::java
+  contain ::ftep::common::java
 
   $flyway_commandline_url = pick(
     $source,
@@ -36,6 +36,6 @@ class fstep::db::flyway (
     cleanup          => true,
   }
 
-  Class['fstep::db::flyway'] -> Ftep::Db::Flyway_migration<||>
+  Class['ftep::db::flyway'] -> Ftep::Db::Flyway_migration<||>
 
 }

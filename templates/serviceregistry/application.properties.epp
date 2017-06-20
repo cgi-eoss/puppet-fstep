@@ -8,9 +8,9 @@
     Hash $custom_properties
 | -%>
 # Managed by Puppet
-# FS-TEP Service Registry service configuration
+# F-TEP Service Registry service configuration
 
-spring.application.name=FS-TEP Service Registry
+spring.application.name=F-TEP Service Registry
 
 logging.config=<%= $logging_config_file %>
 

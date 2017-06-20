@@ -3,11 +3,11 @@ require 'spec_helper'
 #Puppet::Util::Log.level = :debug
 #Puppet::Util::Log.newdestination(:console)
 
-describe 'fstep::backend', :type => 'class' do
+describe 'ftep::backend', :type => 'class' do
   it { should compile }
-  it { should contain_class('fstep::backend') }
-  it { should contain_class('fstep::backend::java') }
-  it { should contain_class('fstep::backend::zoo_kernel') }
+  it { should contain_class('ftep::backend') }
+  it { should contain_class('ftep::backend::java') }
+  it { should contain_class('ftep::backend::zoo_kernel') }
 
   # Java config
   it { should contain_file('/etc/ld.so.conf.d/java.conf') }
@@ -19,7 +19,7 @@ describe 'fstep::backend', :type => 'class' do
 
   it { should contain_package('zoo-kernel').with_name('zoo-kernel') }
   it { should contain_file('/var/www/cgi-bin/main.cfg')
-                  .with_content(/^serverAddress = https:\/\/foodsecurity-tep.eo.esa.int\/wps$/)
+                  .with_content(/^serverAddress = https:\/\/forestry-tep.eo.esa.int\/wps$/)
                   .with_content(/^dataPath = \/var\/www\/temp/)
   }
 end

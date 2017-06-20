@@ -1,4 +1,4 @@
-class fstep::resto (
+class ftep::resto (
   $install_dir   = '/opt/resto',
   $config_file   = 'include/config.php',
 
@@ -13,12 +13,12 @@ class fstep::resto (
   $db_pass       = undef,
 ) {
 
-  require ::fstep::globals
+  require ::ftep::globals
   require ::epel
 
-  contain ::fstep::common::apache
-  contain ::fstep::common::php
-  contain ::fstep::db::flyway
+  contain ::ftep::common::apache
+  contain ::ftep::common::php
+  contain ::ftep::db::flyway
 
   include ::apache::mod::proxy_http
   include ::apache::mod::rewrite
@@ -31,16 +31,16 @@ class fstep::resto (
     ensure => 'latest',
   })
 
-  $real_db_host = pick($db_host, $::fstep::globals::db_hostname)
-  $real_db_name = pick($db_name, $::fstep::globals::fstep_db_resto_name)
-  $real_db_user = pick($db_user, $::fstep::globals::fstep_db_resto_username)
-  $real_db_pass = pick($db_pass, $::fstep::globals::fstep_db_resto_password)
+  $real_db_host = pick($db_host, $::ftep::globals::db_hostname)
+  $real_db_name = pick($db_name, $::ftep::globals::ftep_db_resto_name)
+  $real_db_user = pick($db_user, $::ftep::globals::ftep_db_resto_username)
+  $real_db_pass = pick($db_pass, $::ftep::globals::ftep_db_resto_password)
 
   file { "${install_dir}/${config_file}":
     ensure  => 'present',
     owner   => 'root',
     group   => 'root',
-    content => epp('fstep/resto/config.php.epp', {
+    content => epp('ftep/resto/config.php.epp', {
       'root_endpoint'  => $root_endpoint,
       'db_driver'      => $db_driver,
       'db_name'        => $real_db_name,
@@ -53,27 +53,27 @@ class fstep::resto (
     require => Package['resto'],
   }
 
-  $resto_db_migration_requires = defined(Class["::fstep::db"]) ? {
-    true    => [Class['::fstep::db'], Package['resto']],
+  $resto_db_migration_requires = defined(Class["::ftep::db"]) ? {
+    true    => [Class['::ftep::db'], Package['resto']],
     default => [Package['resto']]
   }
 
-  fstep::db::flyway_migration { 'resto':
+  ftep::db::flyway_migration { 'resto':
     location     => '/opt/resto/_flyway_migration',
     placeholders => {
       'DB'     => $real_db_name,
       'SCHEMA' => $db_schema,
       'USER'   => $real_db_user,
     },
-    db_username  => $fstep::globals::fstep_db_resto_su_username,
-    db_password  => $fstep::globals::fstep_db_resto_su_password,
-    jdbc_url     => "jdbc:postgresql://${::fstep::globals::db_hostname}/${::fstep::globals::fstep_db_resto_name}",
+    db_username  => $ftep::globals::ftep_db_resto_su_username,
+    db_password  => $ftep::globals::ftep_db_resto_su_password,
+    jdbc_url     => "jdbc:postgresql://${::ftep::globals::db_hostname}/${::ftep::globals::ftep_db_resto_name}",
     require      => $resto_db_migration_requires,
   }
 
-  ::apache::vhost { 'fstep-resto':
+  ::apache::vhost { 'ftep-resto':
     port             => '80',
-    servername       => 'fstep-resto',
+    servername       => 'ftep-resto',
     docroot          => $install_dir,
     override         => ['All'],
     directoryindex   => '/index.php index.php',

@@ -1,10 +1,10 @@
-class fstep::drupal::apache(
+class ftep::drupal::apache(
   $site_path
 ) {
 
-  require ::fstep::globals
+  require ::ftep::globals
 
-  contain ::fstep::common::apache
+  contain ::ftep::common::apache
 
   include ::apache::mod::proxy_http
   include ::apache::mod::rewrite
@@ -13,9 +13,9 @@ class fstep::drupal::apache(
   # apache::mod::proxy_fcgi does not include the package on CentOS 6
   ensure_resource('apache::mod', 'proxy_fcgi', { package => 'mod_proxy_fcgi', require => Class['apache::mod::proxy'] })
 
-  ::apache::vhost { 'fstep-drupal':
+  ::apache::vhost { 'ftep-drupal':
     port             => '80',
-    servername       => 'fstep-drupal',
+    servername       => 'ftep-drupal',
     docroot          => "${site_path}",
     override         => ['All'],
     directoryindex   => '/index.php index.php',
