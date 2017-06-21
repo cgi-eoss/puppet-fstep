@@ -50,6 +50,7 @@ class ftep::drupal (
   ::drupal::site { $drupal_site:
     core_version     => $drupal_version,
     modules          => {
+      'advanced_forum'    => '2.6',
       'backup_migrate'    => '3.1',
       'ctools'            => '1.9',
       'entity'            => '1.7',
