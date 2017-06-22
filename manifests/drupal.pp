@@ -57,6 +57,7 @@ class ftep::drupal (
       'entityreference'   => '1.1',
       'registry_autoload' => '1.3',
       'shib_auth'         => '4.3',
+      'twitter_block'     => '2.3',
       'views'             => '3.13',
       'endpoint'          => { 'download' => {
         'type' => 'copy',
