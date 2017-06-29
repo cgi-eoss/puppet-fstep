@@ -18,7 +18,7 @@ class ftep::kubernetes::master(
   class { 'kubernetes::master::apiserver':
     ensure                   => running,
     allow_privileged         => true,
-    service_cluster_ip_range => '192.168.5.0/24',
+    service_cluster_ip_range => '10.1.0.0/16',
     etcd_servers             => [ "http://${real_kubernetes_master_ip}:2379" ],
     insecure_bind_address    => "${real_kubernetes_master_ip}"
   }
@@ -27,18 +27,15 @@ class ftep::kubernetes::master(
     master => "${real_kubernetes_master_ip}:8080",
   }
 
-  class { 'kubernetes::node::kube_proxy':
-    master => "http://${real_kubernetes_master_ip}:8080",
-  }
+  etcd_key { '/foodsecurity/network/config': value => '{ "Network": "10.1.0.0/16" }' }
 
   class { 'flannel':
-    etcd_endpoints => "http://${real_kubernetes_master_ip}:2379",
-    etcd_prefix    => '/coreos.com/network',
+    # validate_bool($service_enable, $manage_docker, $journald_forward_enable, $kube_subnet_mgr)
     service_enable          => true,
     manage_docker           => false,
     journald_forward_enable => false,
     kube_subnet_mgr         => false,
     etcd_endpoints          => [ "http://${real_kubernetes_master_ip}:2379" ],
-    etcd_prefix             => '/coreos.com/network',
+    etcd_prefix             => '/foodsecurity/network',
   }
 }

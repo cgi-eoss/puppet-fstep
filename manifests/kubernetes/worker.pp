@@ -17,8 +17,16 @@ class ftep::kubernetes::worker(
     pod_cidr       => '10.1.0.0/16',
   }
 
+  class { 'flannel':
+    service_enable          => true,
+    manage_docker           => false,
+    journald_forward_enable => false,
+    kube_subnet_mgr         => false,
+    etcd_endpoints          => [ "http://${real_kubernetes_master_ip}:2379" ],
+    etcd_prefix             => '/foodsecurity/network',
+  }
+
   class { 'kubernetes::node::kube_proxy':
     master => "http://${real_kubernetes_master_ip}:8080",
   }
 }
-
