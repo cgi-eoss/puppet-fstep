@@ -34,5 +34,11 @@ class ftep::kubernetes::master(
   class { 'flannel':
     etcd_endpoints => "http://${real_kubernetes_master_ip}:2379",
     etcd_prefix    => '/coreos.com/network',
+    service_enable          => true,
+    manage_docker           => false,
+    journald_forward_enable => false,
+    kube_subnet_mgr         => false,
+    etcd_endpoints          => [ "http://${real_kubernetes_master_ip}:2379" ],
+    etcd_prefix             => '/coreos.com/network',
   }
 }
