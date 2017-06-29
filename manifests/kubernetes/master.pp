@@ -10,22 +10,29 @@ class ftep::kubernetes::master(
   include ::kubernetes::client
 
   class { 'etcd':
-    listen_client_urls          => 'http://0.0.0.0:2379',
-    advertise_client_urls       => "http://${real_kubernetes_master_ip}:2379,http://127.0.0.1:2379",
-    listen_peer_urls            => 'http://0.0.0.0:2380',
-    initial_advertise_peer_urls => "http://${real_kubernetes_master_ip}:2380,http://127.0.0.1:2379",
-    initial_cluster             => [
-      "${::hostname}=http://${::fqdn}:2380",
-      ],
-  } ->
+    ensure                     => 'latest',
+    listen_client_urls    => 'http://0.0.0.0:2379',
+    advertise_client_urls => 'http://0.0.0.0:2379',
+  }
 
   class { 'kubernetes::master::apiserver':
-    ensure => running,
-    allow_privileged => true,
-    service_cluster_ip_range => '192.168.5.0/24'
-  } ->
+    ensure                   => running,
+    allow_privileged         => true,
+    service_cluster_ip_range => '192.168.5.0/24',
+    etcd_servers             => [ "http://${real_kubernetes_master_ip}:2379" ],
+    insecure_bind_address    => "${real_kubernetes_master_ip}"
+  }
+
   class { 'kubernetes::master::scheduler':
     master => "${real_kubernetes_master_ip}:8080",
   }
-}
 
+  class { 'kubernetes::node::kube_proxy':
+    master => "http://${real_kubernetes_master_ip}:8080",
+  }
+
+  class { 'flannel':
+    etcd_endpoints => "http://${real_kubernetes_master_ip}:2379",
+    etcd_prefix    => '/coreos.com/network',
+  }
+}
