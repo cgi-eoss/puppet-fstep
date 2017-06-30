@@ -20,7 +20,7 @@ class ftep::kubernetes::master(
     allow_privileged         => true,
     service_cluster_ip_range => '10.1.0.0/16',
     etcd_servers             => [ "http://${real_kubernetes_master_hostname}:2379" ],
-    insecure_bind_address    => "${real_kubernetes_master_hostname}"
+    insecure_bind_address    => "0.0.0.0"
   }
 
   class { 'kubernetes::master::scheduler':
