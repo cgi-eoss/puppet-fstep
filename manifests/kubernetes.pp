@@ -2,6 +2,7 @@ class ftep::kubernetes(){
 
   require ::ftep::globals
   require ::epel
+
   require ::etcd
   require ::kubernetes::master
   require ::kubernetes::node

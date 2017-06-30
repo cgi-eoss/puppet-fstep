@@ -30,6 +30,7 @@ class ftep::globals (
   $monitor_hostname                 = 'ftep-monitor',
   $resto_hostname                   = 'ftep-resto',
   $default_gui_hostname             = 'ftep-worker',
+  $kubernetes_master_hostname       = 'fskubermaster',
 
   $hosts_override                   = { },
 

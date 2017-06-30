@@ -1,11 +1,11 @@
 class ftep::kubernetes::master(
-  $kubernetes_master_ip = '192.168.101.13',
+  $kubernetes_master_hostname = $::fqdn,
 ) {
 
   require ::ftep::globals
   require ::epel
 
-  $real_kubernetes_master_ip = pick($kubernetes_master_ip, $ftep::globals::kubernetes_master_ip)
+  $real_kubernetes_master_hostname = pick($kubernetes_master_hostname, $ftep::globals::kubernetes_master_hostname)
 
   include ::kubernetes::client
 
@@ -19,12 +19,12 @@ class ftep::kubernetes::master(
     ensure                   => running,
     allow_privileged         => true,
     service_cluster_ip_range => '10.1.0.0/16',
-    etcd_servers             => [ "http://${real_kubernetes_master_ip}:2379" ],
-    insecure_bind_address    => "${real_kubernetes_master_ip}"
+    etcd_servers             => [ "http://${real_kubernetes_master_hostname}:2379" ],
+    insecure_bind_address    => "${real_kubernetes_master_hostname}"
   }
 
   class { 'kubernetes::master::scheduler':
-    master => "${real_kubernetes_master_ip}:8080",
+    master => "${real_kubernetes_master_hostname}:8080",
   }
 
   etcd_key { '/foodsecurity/network/config': value => '{ "Network": "10.1.0.0/16" }' }
@@ -35,7 +35,7 @@ class ftep::kubernetes::master(
     manage_docker           => false,
     journald_forward_enable => false,
     kube_subnet_mgr         => false,
-    etcd_endpoints          => [ "http://${real_kubernetes_master_ip}:2379" ],
+    etcd_endpoints          => [ "http://${real_kubernetes_master_hostname}:2379" ],
     etcd_prefix             => '/foodsecurity/network',
   }
 }
