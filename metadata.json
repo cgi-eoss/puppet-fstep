@@ -1,12 +1,12 @@
 {
-  "name": "cgieoss-ftep",
-  "version": "0.6.0",
+  "name": "cgieoss-fstep",
+  "version": "0.1.0",
   "author": "cgieoss",
-  "summary": "Installation and configuration of F-TEP components",
+  "summary": "Installation and configuration of FS-TEP components",
   "license": "Apache-2.0",
-  "source": "https://github.com/cgi-eoss/puppet-ftep",
-  "project_page": "https://github.com/cgi-eoss/puppet-ftep",
-  "issues_url": "https://github.com/cgi-eoss/puppet-ftep/issues",
+  "source": "https://github.com/cgi-eoss/puppet-fstep",
+  "project_page": "https://github.com/cgi-eoss/puppet-fstep",
+  "issues_url": "https://github.com/cgi-eoss/puppet-fstep/issues",
   "dependencies": [
     { "name": "datacentred-telegraf", "version_requirement": ">= 1.4.0 < 2.0.0" },
     { "name": "derdanne-nfs", "version_requirement": ">= 2.0.3 < 3.0.0" },
