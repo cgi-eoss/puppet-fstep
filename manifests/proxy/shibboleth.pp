@@ -7,8 +7,8 @@ class ftep::proxy::shibboleth (
 
   $clock_skew                       = 180,
 
-  $sp_id                            = 'https://forestry-tep.eo.esa.int/shibboleth',
-  $home_url                         = 'https://forestry-tep.eo.esa.int/',
+  $sp_id                            = 'https://foodsecurity-tep.eo.esa.int/shibboleth',
+  $home_url                         = 'https://foodsecurity-tep.eo.esa.int/',
   $app_defaults_signing             = 'false',
   $app_defaults_encryption          = 'false',
   $app_defaults_remote_user         = 'Eosso-Person-commonName',
@@ -20,11 +20,11 @@ class ftep::proxy::shibboleth (
   $idp_scope                        = 'evo-pdgs.com',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
-      'location' => 'https://forestry-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
+      'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
   ],
   $sp_slo_service                   = {
     'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-    'location' => 'https://forestry-tep.eo.esa.int/Shibboleth.sso/SLO/Redirect'
+    'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SLO/Redirect'
   },
   $sp_name_id_formats               = ['urn:oasis:names:tc:SAML:2.0:nameid-format:transient'],
   $org_name                         = 'f-tep',

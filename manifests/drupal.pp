@@ -1,5 +1,5 @@
 class ftep::drupal (
-  $drupal_site      = 'forestry-tep.eo.esa.int',
+  $drupal_site      = 'foodsecurity-tep.eo.esa.int',
   $drupal_version   = '7.54',
   $www_path         = '/var/www/html/drupal',
   $www_user         = 'apache',
