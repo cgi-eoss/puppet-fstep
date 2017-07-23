@@ -1,4 +1,4 @@
-class ftep::drupal (
+class fstep::drupal (
   $drupal_site      = 'foodsecurity-tep.eo.esa.int',
   $drupal_version   = '7.54',
   $www_path         = '/var/www/html/drupal',
@@ -12,23 +12,23 @@ class ftep::drupal (
   $db_driver        = 'pgsql',
   $db_prefix        = 'drupal_',
 
-  $ftep_module_name = 'ftep-backend',
+  $fstep_module_name = 'fstep-backend',
 
   $init_db          = true,
   $enable_cron      = true,
 ) {
 
-  require ::ftep::globals
+  require ::fstep::globals
   require ::epel
 
-  contain ::ftep::common::php
+  contain ::fstep::common::php
 
   class { '::postgresql::client': }
 
-  $real_db_host = pick($db_host, $::ftep::globals::db_hostname)
-  $real_db_name = pick($db_name, $::ftep::globals::ftep_db_name)
-  $real_db_user = pick($db_user, $::ftep::globals::ftep_db_username)
-  $real_db_pass = pick($db_pass, $::ftep::globals::ftep_db_password)
+  $real_db_host = pick($db_host, $::fstep::globals::db_hostname)
+  $real_db_name = pick($db_name, $::fstep::globals::fstep_db_name)
+  $real_db_user = pick($db_user, $::fstep::globals::fstep_db_username)
+  $real_db_pass = pick($db_pass, $::fstep::globals::fstep_db_password)
 
   file { $www_path:
     ensure => directory,
@@ -63,12 +63,12 @@ class ftep::drupal (
         'type' => 'copy',
         'url'  => 'file:///opt/f-tep-drupalmodules/endpoint/',
       } },
-      $ftep_module_name   => { 'download' => {
+      $fstep_module_name   => { 'download' => {
         'type' => 'copy',
-        'url'  => 'file:///opt/f-tep-drupalmodules/ftep-backend/',
+        'url'  => 'file:///opt/f-tep-drupalmodules/fstep-backend/',
       } }
     },
-    settings_content => epp('ftep/drupal/settings.php.epp', {
+    settings_content => epp('fstep/drupal/settings.php.epp', {
       'db'         => {
         'host'     => $real_db_host,
         'database' => $real_db_name,
@@ -78,7 +78,7 @@ class ftep::drupal (
         'driver'   => $db_driver,
         'prefix'   => $db_prefix,
       },
-      'ftep_proxy' => $::ftep::globals::proxy_hostname,
+      'fstep_proxy' => $::fstep::globals::proxy_hostname,
     }),
     cron_file_ensure => $enable_cron ? {
       true    => 'present',
@@ -89,13 +89,13 @@ class ftep::drupal (
 
   $site_path = "${www_path}/${drupal_site}"
 
-  class { ::ftep::drupal::apache:
+  class { ::fstep::drupal::apache:
     site_path => $site_path
   }
 
   file { "${site_path}/api.php":
     ensure  => link,
-    target  => "${site_path}/sites/all/modules/${ftep_module_name}/ftep_search/api.php",
+    target  => "${site_path}/sites/all/modules/${fstep_module_name}/fstep_search/api.php",
     require => [Drupal::Site[$drupal_site]],
   }
 
@@ -104,8 +104,8 @@ class ftep::drupal (
     $drush_site_install = "${::drupal::drush_path} -y site-install"
     $drush_si_options = "standard install_configure_form.update_status_module='array(FALSE,FALSE)'"
 
-    $drupal_site_install_requires = defined(Class["::ftep::db"]) ? {
-      true    => [Class['::ftep::db'], Drupal::Site[$drupal_site]],
+    $drupal_site_install_requires = defined(Class["::fstep::db"]) ? {
+      true    => [Class['::fstep::db'], Drupal::Site[$drupal_site]],
       default => [Drupal::Site[$drupal_site]]
     }
 

@@ -4,4 +4,4 @@
 :yaml:
   :datadir: 'spec/fixtures/hiera'
 :hierarchy:
-  - ftep
+  - fstep

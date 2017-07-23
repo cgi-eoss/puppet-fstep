@@ -1,12 +1,12 @@
-class ftep::monitor(){
+class fstep::monitor(){
 
-  require ::ftep::globals
+  require ::fstep::globals
   require ::epel
 
-  contain ::ftep::monitor::grafana
-  contain ::ftep::monitor::influxdb
-  contain ::ftep::monitor::telegraf
-  contain ::ftep::monitor::graylog_server
+  contain ::fstep::monitor::grafana
+  contain ::fstep::monitor::influxdb
+  contain ::fstep::monitor::telegraf
+  contain ::fstep::monitor::graylog_server
 
 }
 

@@ -1,4 +1,4 @@
-class ftep::repo::elgis {
+class fstep::repo::elgis {
   ensure_resource('yumrepo', 'elgis', {
     ensure   => 'present',
     descr    => 'EL GIS 6 - $basearch',

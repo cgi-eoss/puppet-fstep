@@ -3,11 +3,11 @@ require 'spec_helper'
 #Puppet::Util::Log.level = :debug
 #Puppet::Util::Log.newdestination(:console)
 
-describe 'ftep::backend', :type => 'class' do
+describe 'fstep::backend', :type => 'class' do
   it { should compile }
-  it { should contain_class('ftep::backend') }
-  it { should contain_class('ftep::backend::java') }
-  it { should contain_class('ftep::backend::zoo_kernel') }
+  it { should contain_class('fstep::backend') }
+  it { should contain_class('fstep::backend::java') }
+  it { should contain_class('fstep::backend::zoo_kernel') }
 
   # Java config
   it { should contain_file('/etc/ld.so.conf.d/java.conf') }

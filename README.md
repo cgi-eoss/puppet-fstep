@@ -30,7 +30,7 @@ and the processing manager.
 ### Setup Requirements
 
 * This module may manage a yum repository for package installation with the
-  parameter `ftep::repo::location`. This may be the URL of a hosted repo, or
+  parameter `fstep::repo::location`. This may be the URL of a hosted repo, or
   an on-disk path to a static repo (e.g. built with `createrepo`) in the format
   `file:///path/to/fsteprepo/$releasever/local/$basearch`. The latter is useful
   for standalone `puppet apply` deployments.
@@ -39,22 +39,22 @@ and the processing manager.
 
 The fstep module may be used to install the FS-TEP components individually by the
 classes:
-* `ftep::db`
-* `ftep::drupal`
-* `ftep::geoserver`
-* `ftep::monitor`
-* `ftep::proxy`
-* `ftep::resto`
-* `ftep::server`
-* `ftep::webapp`
-* `ftep::worker`
-* `ftep::wps`
+* `fstep::db`
+* `fstep::drupal`
+* `fstep::geoserver`
+* `fstep::monitor`
+* `fstep::proxy`
+* `fstep::resto`
+* `fstep::server`
+* `fstep::webapp`
+* `fstep::worker`
+* `fstep::wps`
 
-Configuration parameters shared by these classes may be set via `ftep::globals`.
+Configuration parameters shared by these classes may be set via `fstep::globals`.
 
 Interoperability between the components is managed via hostnames, which may be
-resolved at runtime via DNS or manually, by overriding the `ftep::globals::hosts_override`
-hash. See the `ftep::globals` class for available parameters, and the specific
+resolved at runtime via DNS or manually, by overriding the `fstep::globals::hosts_override`
+hash. See the `fstep::globals` class for available parameters, and the specific
 component classes for how these are used, for example in `apache::vhost`
 resources.
 
@@ -66,11 +66,11 @@ must be carried out to ensure full functionality of some components. These may
 be omitted when some functionality is not required.
 
 The following list describes some of these possible post-installation actions:
-* `ftep::drupal`: Drupal site initialisation &amp; content restoration
-* `ftep::monitor`: Creation of graylog inputs &amp; dashboards
-* `ftep::monitor`: Creation of grafana dashboards
-* `ftep::worker`: Installation of downloader credentials
-* `ftep::wps`: Restoration &amp; publishing of default FS-TEP services
+* `fstep::drupal`: Drupal site initialisation &amp; content restoration
+* `fstep::monitor`: Creation of graylog inputs &amp; dashboards
+* `fstep::monitor`: Creation of grafana dashboards
+* `fstep::worker`: Installation of downloader credentials
+* `fstep::wps`: Restoration &amp; publishing of default FS-TEP services
 
 
 ## Limitations

@@ -23,7 +23,7 @@ inputs {
     path-glob-root = "/var/log/httpd"
     path-glob-pattern = "*.log"
     message-fields = {
-      "ftepComponent" = "httpd"
+      "fstepComponent" = "httpd"
     }
   }
 <% } -%>

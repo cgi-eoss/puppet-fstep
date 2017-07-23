@@ -1,13 +1,13 @@
-class ftep::common::datadir (
+class fstep::common::datadir (
   $data_basedir = '/data'
 ) {
-  require ::ftep::common::user
+  require ::fstep::common::user
 
   # TODO Use nfs server for $data_basedir
   file { $data_basedir:
     ensure  => directory,
-    owner   => 'ftep',
-    group   => 'ftep',
+    owner   => 'fstep',
+    group   => 'fstep',
     mode    => '755',
     recurse => false,
   }

@@ -1,6 +1,6 @@
 <%- |
     Hash $db,
-    String $ftep_proxy
+    String $fstep_proxy
 | -%>
 <?php
 
@@ -414,7 +414,7 @@ $conf['reverse_proxy'] = TRUE;
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $conf['reverse_proxy'] is TRUE.
  */
-$conf['reverse_proxy_addresses'] = array('<%= $ftep_proxy %>');
+$conf['reverse_proxy_addresses'] = array('<%= $fstep_proxy %>');
 
 /**
  * Set this value if your proxy server sends the client IP in a header

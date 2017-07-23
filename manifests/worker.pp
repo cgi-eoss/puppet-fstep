@@ -1,4 +1,4 @@
-class ftep::worker (
+class fstep::worker (
   $component_name           = 'f-tep-worker',
 
   $install_path             = '/var/f-tep/worker',
@@ -34,21 +34,21 @@ class ftep::worker (
   $custom_config_properties = { },
 ) {
 
-  require ::ftep::globals
+  require ::fstep::globals
 
-  contain ::ftep::common::datadir
-  contain ::ftep::common::java
+  contain ::fstep::common::datadir
+  contain ::fstep::common::java
   # User and group are set up by the RPM if not included here
-  contain ::ftep::common::user
-  contain ::ftep::common::docker
+  contain ::fstep::common::user
+  contain ::fstep::common::docker
 
-  $real_application_port = pick($application_port, $ftep::globals::worker_application_port)
-  $real_grpc_port = pick($grpc_port, $ftep::globals::worker_grpc_port)
+  $real_application_port = pick($application_port, $fstep::globals::worker_application_port)
+  $real_grpc_port = pick($grpc_port, $fstep::globals::worker_grpc_port)
 
-  $real_serviceregistry_user = pick($serviceregistry_user, $ftep::globals::serviceregistry_user)
-  $real_serviceregistry_pass = pick($serviceregistry_pass, $ftep::globals::serviceregistry_pass)
-  $real_serviceregistry_host = pick($serviceregistry_host, $ftep::globals::server_hostname)
-  $real_serviceregistry_port = pick($serviceregistry_port, $ftep::globals::serviceregistry_application_port)
+  $real_serviceregistry_user = pick($serviceregistry_user, $fstep::globals::serviceregistry_user)
+  $real_serviceregistry_pass = pick($serviceregistry_pass, $fstep::globals::serviceregistry_pass)
+  $real_serviceregistry_host = pick($serviceregistry_host, $fstep::globals::server_hostname)
+  $real_serviceregistry_port = pick($serviceregistry_port, $fstep::globals::serviceregistry_application_port)
   $serviceregistry_creds = "${real_serviceregistry_user}:${real_serviceregistry_pass}"
   $serviceregistry_server = "${real_serviceregistry_host}:${real_serviceregistry_port}"
   $real_serviceregistry_url = pick($serviceregistry_url,
@@ -57,23 +57,23 @@ class ftep::worker (
   ensure_packages(['f-tep-worker'], {
     ensure => 'latest',
     name   => 'f-tep-worker',
-    tag    => 'ftep',
+    tag    => 'fstep',
     notify => Service['f-tep-worker'],
   })
 
-  file { ["${ftep::common::datadir::data_basedir}/${cache_dir}", "${ftep::common::datadir::data_basedir}/${jobs_dir}"]:
+  file { ["${fstep::common::datadir::data_basedir}/${cache_dir}", "${fstep::common::datadir::data_basedir}/${jobs_dir}"]:
     ensure  => directory,
-    owner   => $ftep::globals::user,
-    group   => $ftep::globals::group,
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
     mode    => '755',
     recurse => false,
-    require => File[$ftep::common::datadir::data_basedir],
+    require => File[$fstep::common::datadir::data_basedir],
   }
 
   file { $config_file:
     ensure  => 'present',
-    owner   => $ftep::globals::user,
-    group   => $ftep::globals::group,
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
     content =>
       'JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"'
     ,
@@ -81,26 +81,26 @@ class ftep::worker (
     notify  => Service['f-tep-worker'],
   }
 
-  ::ftep::logging::log4j2 { $logging_config_file:
-    ftep_component => $component_name,
+  ::fstep::logging::log4j2 { $logging_config_file:
+    fstep_component => $component_name,
     require        => Package['f-tep-worker'],
     notify         => Service['f-tep-worker'],
   }
 
   file { $properties_file:
     ensure  => 'present',
-    owner   => $ftep::globals::user,
-    group   => $ftep::globals::group,
-    content => epp('ftep/worker/application.properties.epp', {
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
+    content => epp('fstep/worker/application.properties.epp', {
       'logging_config_file'   => $logging_config_file,
       'server_port'           => $real_application_port,
       'grpc_port'             => $real_grpc_port,
       'serviceregistry_url'   => $real_serviceregistry_url,
       'worker_environment'    => $worker_environment,
-      'cache_basedir'         => "${ftep::common::datadir::data_basedir}/${cache_dir}",
+      'cache_basedir'         => "${fstep::common::datadir::data_basedir}/${cache_dir}",
       'cache_concurrency'     => $cache_concurrency,
       'cache_maxweight'       => $cache_maxweight,
-      'jobs_basedir'          => "${ftep::common::datadir::data_basedir}/${jobs_dir}",
+      'jobs_basedir'          => "${fstep::common::datadir::data_basedir}/${jobs_dir}",
       'ipt_auth_endpoint'     => $ipt_auth_endpoint,
       'ipt_auth_domain'       => $ipt_auth_domain,
       'ipt_download_base_url' => $ipt_download_base_url,

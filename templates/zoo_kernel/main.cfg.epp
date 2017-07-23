@@ -19,7 +19,7 @@
     String $db_pass,
 
     Hash $env_config,
-    Hash $ftep_config,
+    Hash $fstep_config,
     Hash $java_config,
     Hash $other_config,
 | -%>
@@ -38,11 +38,11 @@ tmpUrl = <%= $tmp_url %>
 cacheDir = <%= $cache_dir %>
 
 [identification]
-title = Forestry TEP (F-TEP)  WPS Server
-abstract = WPS services for Forestry TEP
+title = Food Security TEP (FS-TEP)  WPS Server
+abstract = WPS services for Food Security TEP
 fees = None
 accessConstraints = none
-keywords = WPS,GIS,FTEP,F-TEP,Forestry
+keywords = WPS,GIS,FSTEP,FS-TEP,Food Security
 
 [provider]
 providerName = <%= $provider_name %>
@@ -70,9 +70,9 @@ MaxPermSize = 64m
 <% } -%>
 <% } -%>
 
-<% if !$ftep_config.empty { -%>
-[ftep]
-<% $ftep_config.each |$key, $val| { -%>
+<% if !$fstep_config.empty { -%>
+[fstep]
+<% $fstep_config.each |$key, $val| { -%>
 <%= $key %> = <%= $val %>
 <% } -%>
 <% } -%>

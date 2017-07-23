@@ -1,14 +1,14 @@
 ---
-ftep::repo::location: 'file:///path/to/repo'
-ftep::portal::tls_cert: |
+fstep::repo::location: 'file:///path/to/repo'
+fstep::portal::tls_cert: |
   portal
   tls
   cert
-ftep::portal::tls_key: |
+fstep::portal::tls_key: |
   portal
   tls
   key
-ftep::portal::shibboleth::idp_cert: |
+fstep::portal::shibboleth::idp_cert: |
   idp
   tls
   cert

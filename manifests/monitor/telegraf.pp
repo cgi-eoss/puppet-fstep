@@ -1,16 +1,16 @@
-class ftep::monitor::telegraf(
-  $influx_host = 'ftep-monitor',
+class fstep::monitor::telegraf(
+  $influx_host = 'fstep-monitor',
   $influx_port = '8086',
-  $influx_db   = 'ftep',
-  $influx_user = 'ftep_user',
-  $influx_pass = 'ftep_pass'
+  $influx_db   = 'fstep',
+  $influx_user = 'fstep_user',
+  $influx_pass = 'fstep_pass'
 ) {
 
-  require ::ftep::globals
+  require ::fstep::globals
   require ::epel
 
-  $real_influx_host = pick($influx_host, $ftep::globals::monitor_hostname)
-  $real_influx_port = pick($influx_port, $ftep::globals::monitor_data_port)
+  $real_influx_host = pick($influx_host, $fstep::globals::monitor_hostname)
+  $real_influx_port = pick($influx_port, $fstep::globals::monitor_data_port)
 
   class { '::telegraf':
     hostname => $::hostname,

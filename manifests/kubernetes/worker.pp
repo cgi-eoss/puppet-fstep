@@ -1,11 +1,11 @@
-class ftep::kubernetes::worker(
+class fstep::kubernetes::worker(
   $kubernetes_master_hostname = $::fqdn,
 ) {
 
-  require ::ftep::globals
+  require ::fstep::globals
   require ::epel
 
-  $real_kubernetes_master_hostname = pick($kubernetes_master_hostname, $ftep::globals::kubernetes_master_hostname)
+  $real_kubernetes_master_hostname = pick($kubernetes_master_hostname, $fstep::globals::kubernetes_master_hostname)
 
   include ::kubernetes::client
 

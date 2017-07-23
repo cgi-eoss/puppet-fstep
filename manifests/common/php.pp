@@ -1,14 +1,7 @@
-class ftep::common::php {
+class fstep::common::php {
 
   # Repo for updated PHP packages
-  ensure_resource(yumrepo, 'webtatic', {
-    ensure     => 'present',
-    descr      => 'Webtatic Repository EL6 - $basearch',
-    mirrorlist => 'https://mirror.webtatic.com/yum/el6/$basearch/mirrorlist',
-    enabled    => 1,
-    gpgcheck   => 1,
-    gpgkey     => 'https://mirror.webtatic.com/yum/RPM-GPG-KEY-webtatic-andy',
-  })
+  require fstep::repo::webtatic
 
   # PHP 5.6
   class { ::php:

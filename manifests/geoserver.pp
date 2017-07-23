@@ -1,5 +1,5 @@
 # Install and manage GeoServer for WMS/WFS
-class ftep::geoserver (
+class fstep::geoserver (
   $group                  = 'geoserver',
   $user                   = 'geoserver',
   $user_home              = '/home/geoserver',
@@ -16,9 +16,9 @@ class ftep::geoserver (
   $geoserver_stopport     = undef,
 ) {
 
-  require ::ftep::globals
+  require ::fstep::globals
 
-  contain ::ftep::common::java
+  contain ::fstep::common::java
 
   group { $group:
     ensure => present,
@@ -73,8 +73,8 @@ PORT="<%= $port %>"
 STOPPORT="<%= $stopport %>"
 END
 
-  $real_port = pick($geoserver_port, $ftep::globals::geoserver_port)
-  $real_stopport = pick($geoserver_stopport, $ftep::globals::geoserver_stopport)
+  $real_port = pick($geoserver_port, $fstep::globals::geoserver_port)
+  $real_stopport = pick($geoserver_stopport, $fstep::globals::geoserver_stopport)
 
   file { $config_file:
     ensure  => present,
@@ -91,7 +91,7 @@ END
   file { $init_script:
     ensure  => present,
     mode    => '0755',
-    content => epp('ftep/geoserver/initscript.sh.epp'), # no parameterisation yet
+    content => epp('fstep/geoserver/initscript.sh.epp'), # no parameterisation yet
     require => [User[$user], Archive[$archive], File[$config_file]],
   }
 

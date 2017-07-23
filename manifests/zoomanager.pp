@@ -1,4 +1,4 @@
-class ftep::zoomanager (
+class fstep::zoomanager (
   $component_name           = 'f-tep-zoomanager',
 
   $install_path             = '/var/f-tep/zoomanager',
@@ -26,19 +26,19 @@ class ftep::zoomanager (
   $custom_config_properties = { },
 ) {
 
-  require ::ftep::globals
+  require ::fstep::globals
 
-  contain ::ftep::common::java
+  contain ::fstep::common::java
   # User and group are set up by the RPM if not included here
-  contain ::ftep::common::user
+  contain ::fstep::common::user
 
-  $real_application_port = pick($application_port, $ftep::globals::zoomanager_application_port)
-  $real_grpc_port = pick($grpc_port, $ftep::globals::zoomanager_grpc_port)
+  $real_application_port = pick($application_port, $fstep::globals::zoomanager_application_port)
+  $real_grpc_port = pick($grpc_port, $fstep::globals::zoomanager_grpc_port)
 
-  $real_serviceregistry_user = pick($serviceregistry_user, $ftep::globals::serviceregistry_user)
-  $real_serviceregistry_pass = pick($serviceregistry_pass, $ftep::globals::serviceregistry_pass)
-  $real_serviceregistry_host = pick($serviceregistry_host, $ftep::globals::server_hostname)
-  $real_serviceregistry_port = pick($serviceregistry_port, $ftep::globals::serviceregistry_application_port)
+  $real_serviceregistry_user = pick($serviceregistry_user, $fstep::globals::serviceregistry_user)
+  $real_serviceregistry_pass = pick($serviceregistry_pass, $fstep::globals::serviceregistry_pass)
+  $real_serviceregistry_host = pick($serviceregistry_host, $fstep::globals::server_hostname)
+  $real_serviceregistry_port = pick($serviceregistry_port, $fstep::globals::serviceregistry_application_port)
   $serviceregistry_creds = "${real_serviceregistry_user}:${real_serviceregistry_pass}"
   $serviceregistry_server = "${real_serviceregistry_host}:${real_serviceregistry_port}"
   $real_serviceregistry_url = pick($serviceregistry_url,
@@ -50,14 +50,14 @@ class ftep::zoomanager (
   ensure_packages(['f-tep-zoomanager'], {
     ensure => 'latest',
     name   => 'f-tep-zoomanager',
-    tag    => 'ftep',
+    tag    => 'fstep',
     notify => Service['f-tep-zoomanager'],
   })
 
   file { $config_file:
     ensure  => 'present',
-    owner   => $ftep::globals::user,
-    group   => $ftep::globals::group,
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
     content => 'JAVA_HOME=/etc/alternatives/java_sdk
 JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"'
     ,
@@ -65,17 +65,17 @@ JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLogge
     notify  => Service['f-tep-zoomanager'],
   }
 
-  ::ftep::logging::log4j2 { $logging_config_file:
-    ftep_component => $component_name,
+  ::fstep::logging::log4j2 { $logging_config_file:
+    fstep_component => $component_name,
     require        => Package['f-tep-zoomanager'],
     notify         => Service['f-tep-zoomanager'],
   }
 
   file { $properties_file:
     ensure  => 'present',
-    owner   => $ftep::globals::user,
-    group   => $ftep::globals::group,
-    content => epp('ftep/zoomanager/application.properties.epp', {
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
+    content => epp('fstep/zoomanager/application.properties.epp', {
       'logging_config_file' => $logging_config_file,
       'server_port'         => $real_application_port,
       'grpc_port'           => $real_grpc_port,

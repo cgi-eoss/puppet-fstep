@@ -32,9 +32,9 @@ eureka.client.healthcheck.enabled=true
 eureka.client.serviceUrl.defaultZone=<%= $serviceregistry_url %>
 
 # ZOO Manager configuration
-ftep.zoomanager.zcfg.path=<%= $zcfg_path %>
-ftep.zoomanager.javac.classpath=<%= $javac_classpath %>
-ftep.zoomanager.stub.jarFile=<%= $services_stub_jar %>
+fstep.zoomanager.zcfg.path=<%= $zcfg_path %>
+fstep.zoomanager.javac.classpath=<%= $javac_classpath %>
+fstep.zoomanager.stub.jarFile=<%= $services_stub_jar %>
 
 # Custom manually-appended configuration properties
 <% $custom_properties.each | $key, $value | { %>

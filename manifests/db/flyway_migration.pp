@@ -1,4 +1,4 @@
-define ftep::db::flyway_migration (
+define fstep::db::flyway_migration (
   $location,
   $placeholders = { },
   $db_username,
@@ -6,7 +6,7 @@ define ftep::db::flyway_migration (
   $jdbc_url,
 ) {
 
-  require ::ftep::db::flyway
+  require ::fstep::db::flyway
 
   $placeholders_args = join($placeholders.map |$items| { "-placeholders.${items[0]}=${items[1]}" }, ' ')
 
@@ -14,7 +14,7 @@ define ftep::db::flyway_migration (
     "flyway -user='${db_username}' -password='${db_password}' -url='${jdbc_url}' -locations='filesystem:${location}' ${
       placeholders_args}"
 
-  $flyway_path = $ftep::db::flyway::path;
+  $flyway_path = $fstep::db::flyway::path;
 
   exec { "Flyway migration: ${title}":
     cwd     => $flyway_path,

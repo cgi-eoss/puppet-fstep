@@ -1,14 +1,14 @@
-class ftep::kubernetes(){
+class fstep::kubernetes(){
 
-  require ::ftep::globals
+  require ::fstep::globals
   require ::epel
 
   require ::etcd
   require ::kubernetes::master
   require ::kubernetes::node
 
-  contain ::ftep::kubernetes::master
-  contain ::ftep::kubernetes::worker
+  contain ::fstep::kubernetes::master
+  contain ::fstep::kubernetes::worker
 
 }
 
