@@ -1,6 +1,6 @@
 class fstep::drupal (
   $drupal_site      = 'foodsecurity-tep.eo.esa.int',
-  $drupal_version   = '7.54',
+  $drupal_version   = '7.56',
   $www_path         = '/var/www/html/drupal',
   $www_user         = 'apache',
 
@@ -11,8 +11,6 @@ class fstep::drupal (
   $db_port          = '5432',
   $db_driver        = 'pgsql',
   $db_prefix        = 'drupal_',
-
-  $fstep_module_name = 'fstep-backend',
 
   $init_db          = true,
   $enable_cron      = true,
@@ -36,11 +34,6 @@ class fstep::drupal (
     group  => 'root',
   }
 
-  package { 'f-tep-drupalmodules':
-    ensure => latest,
-    notify => Drupal::Site[$drupal_site],
-  }
-
   class { ::drupal:
     www_dir     => $www_path,
     www_process => $www_user,
@@ -52,21 +45,11 @@ class fstep::drupal (
     modules          => {
       'advanced_forum'    => '2.6',
       'backup_migrate'    => '3.1',
-      'ctools'            => '1.9',
-      'entity'            => '1.7',
-      'entityreference'   => '1.1',
+      'ctools'            => '1.12',
       'registry_autoload' => '1.3',
-      'shib_auth'         => '4.3',
+      'shib_auth'         => '4.4',
       'twitter_block'     => '2.3',
-      'views'             => '3.13',
-      'endpoint'          => { 'download' => {
-        'type' => 'copy',
-        'url'  => 'file:///opt/f-tep-drupalmodules/endpoint/',
-      } },
-      $fstep_module_name   => { 'download' => {
-        'type' => 'copy',
-        'url'  => 'file:///opt/f-tep-drupalmodules/fstep-backend/',
-      } }
+      'views'             => '3.16',
     },
     settings_content => epp('fstep/drupal/settings.php.epp', {
       'db'         => {
@@ -84,19 +67,13 @@ class fstep::drupal (
       true    => 'present',
       default => 'absent'
     },
-    require          => [Package['f-tep-drupalmodules'], Class['::drupal']],
+    require          => [Class['::drupal']],
   }
 
   $site_path = "${www_path}/${drupal_site}"
 
   class { ::fstep::drupal::apache:
     site_path => $site_path
-  }
-
-  file { "${site_path}/api.php":
-    ensure  => link,
-    target  => "${site_path}/sites/all/modules/${fstep_module_name}/fstep_search/api.php",
-    require => [Drupal::Site[$drupal_site]],
   }
 
   # Install the site if the database is not yet initialised
