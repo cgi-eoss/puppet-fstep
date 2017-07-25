@@ -1,5 +1,5 @@
 class fstep::webapp (
-  $app_path        = '/var/www/html/f-tep',
+  $app_path        = '/var/www/html/fs-tep',
   $app_config_file = 'scripts/fstepConfig.js',
 
   $fstep_url        = undef,
@@ -13,9 +13,9 @@ class fstep::webapp (
 
   contain ::fstep::common::apache
 
-  ensure_packages(['f-tep-portal'], {
+  ensure_packages(['fs-tep-portal'], {
     ensure => 'latest',
-    name   => 'f-tep-portal',
+    name   => 'fs-tep-portal',
     tag    => 'fstep',
   })
 
@@ -34,7 +34,7 @@ class fstep::webapp (
       'sso_url'      => $sso_url,
       'mapbox_token' => $mapbox_token,
     }),
-    require => Package['f-tep-portal'],
+    require => Package['fs-tep-portal'],
   }
 
   ::apache::vhost { 'fstep-webapp':

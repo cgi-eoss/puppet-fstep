@@ -20,9 +20,9 @@
     Hash $custom_properties
 | -%>
 # Managed by Puppet
-# F-TEP Worker service configuration
+# FS-TEP Worker service configuration
 
-spring.application.name=F-TEP Worker
+spring.application.name=FS-TEP Worker
 
 logging.config=<%= $logging_config_file %>
 

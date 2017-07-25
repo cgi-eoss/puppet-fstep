@@ -31,12 +31,12 @@ class fstep::db::postgresql (
       "host ${db_name} ${db_username} ${fstep::globals::wps_hostname} md5",
       "host ${db_name} ${db_username} ${fstep::globals::drupal_hostname} md5",
       "host ${db_name} ${db_username} ${fstep::globals::server_hostname} md5",
-      # Access to v2 db only required for f-tep-server
+      # Access to v2 db only required for fs-tep-server
       "host ${db_v2_name} ${db_username} ${fstep::globals::server_hostname} md5",
       # Access to resto db only required for fstep-resto
       "host ${db_resto_name} ${db_resto_username} ${fstep::globals::resto_hostname} md5",
       "host ${db_resto_name} ${db_resto_su_username} ${fstep::globals::resto_hostname} md5",
-      # Access to zoo db only required for f-tep-wps
+      # Access to zoo db only required for fs-tep-wps
       "host ${db_zoo_name} ${db_zoo_username} ${fstep::globals::wps_hostname} md5",
     ]
   }

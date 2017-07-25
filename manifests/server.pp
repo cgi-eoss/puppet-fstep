@@ -1,15 +1,15 @@
 class fstep::server (
-  $component_name                     = 'f-tep-server',
+  $component_name                     = 'fs-tep-server',
 
-  $install_path                       = '/var/f-tep/server',
-  $config_file                        = '/var/f-tep/server/f-tep-server.conf',
-  $logging_config_file                = '/var/f-tep/server/log4j2.xml',
-  $properties_file                    = '/var/f-tep/server/application.properties',
+  $install_path                       = '/var/fs-tep/server',
+  $config_file                        = '/var/fs-tep/server/fs-tep-server.conf',
+  $logging_config_file                = '/var/fs-tep/server/log4j2.xml',
+  $properties_file                    = '/var/fs-tep/server/application.properties',
 
   $service_enable                     = true,
   $service_ensure                     = 'running',
 
-  # f-tep-server.properties config
+  # fs-tep-server.properties config
   $application_port                   = undef,
   $grpc_port                          = undef,
 
@@ -113,11 +113,11 @@ class fstep::server (
 
   $real_gui_url_pattern = pick($gui_url_pattern, "${fstep::globals::base_url}/gui/:__PORT__/")
 
-  ensure_packages(['f-tep-server'], {
+  ensure_packages(['fs-tep-server'], {
     ensure => 'latest',
-    name   => 'f-tep-server',
+    name   => 'fs-tep-server',
     tag    => 'fstep',
-    notify => Service['f-tep-server'],
+    notify => Service['fs-tep-server'],
   })
 
   file { ["${fstep::common::datadir::data_basedir}/${output_products_dir}", "${fstep::common::datadir::data_basedir}/${
@@ -137,14 +137,14 @@ class fstep::server (
     content =>
       'JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"'
     ,
-    require => Package['f-tep-server'],
-    notify  => Service['f-tep-server'],
+    require => Package['fs-tep-server'],
+    notify  => Service['fs-tep-server'],
   }
 
   ::fstep::logging::log4j2 { $logging_config_file:
     fstep_component => $component_name,
-    require        => Package['f-tep-server'],
-    notify         => Service['f-tep-server'],
+    require        => Package['fs-tep-server'],
+    notify         => Service['fs-tep-server'],
   }
 
   file { $properties_file:
@@ -188,17 +188,17 @@ class fstep::server (
       'resto_password'                     => $real_resto_password,
       'custom_properties'                  => $custom_config_properties,
     }),
-    require => Package['f-tep-server'],
-    notify  => Service['f-tep-server'],
+    require => Package['fs-tep-server'],
+    notify  => Service['fs-tep-server'],
   }
 
-  $default_service_requires = [Package['f-tep-server'], File[$properties_file]]
+  $default_service_requires = [Package['fs-tep-server'], File[$properties_file]]
   $service_requires = defined(Class["::fstep::db"]) ? {
     true    => concat($default_service_requires, Class['::fstep::db']),
     default => $default_service_requires
   }
 
-  service { 'f-tep-server':
+  service { 'fs-tep-server':
     ensure     => $service_ensure,
     enable     => $service_enable,
     hasrestart => true,

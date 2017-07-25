@@ -1,7 +1,7 @@
 # == Class: fstep::wps
 #
 # Install and manage ZOO-Project's zoo-kernel WPS server and the associated
-# f-tep-zoomanager class
+# fs-tep-zoomanager class
 #
 class fstep::wps (
   $manage_zoo_kernel          = true,
@@ -35,8 +35,8 @@ class fstep::wps (
   $db_type                    = 'PG',
   $db_schema                  = 'public',
 
-  $classpath_jar_files        = ['/var/www/cgi-bin/jars/f-tep-zoolib.jar'],
-  $services_stub_jar_filename = 'f-tep-services.jar',
+  $classpath_jar_files        = ['/var/www/cgi-bin/jars/fs-tep-zoolib.jar'],
+  $services_stub_jar_filename = 'fs-tep-services.jar',
 
   $env_config                 = { },
   $fstep_config                = { },
@@ -102,7 +102,7 @@ class fstep::wps (
 
     $logging_config_file = "${cgi_path}/log4j2.xml"
     ::fstep::logging::log4j2 { $logging_config_file:
-      fstep_component    => 'f-tep-zoolib',
+      fstep_component    => 'fs-tep-zoolib',
       is_spring_context => false,
     }
     $default_java_config = {

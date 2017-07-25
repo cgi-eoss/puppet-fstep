@@ -1,4 +1,4 @@
-# Configure the gateway to the F-TEP services, reverse-proxying to nodes implementing the other classes
+# Configure the gateway to the FS-TEP services, reverse-proxying to nodes implementing the other classes
 class fstep::proxy (
   $vhost_name             = 'fstep-proxy',
 

@@ -34,7 +34,7 @@ return array(
         /*
          * Title
          */
-        'title' => 'F-TEP Resto',
+        'title' => 'FS-TEP Resto',
 
         /*
          * Relative endpoint to directory containing index.php
@@ -57,11 +57,11 @@ return array(
          */
         'osDescription' => array(
             'en' => array(
-                'ShortName' => 'F-TEP Resto',
-                'LongName' => 'F-TEP Resto search service',
+                'ShortName' => 'FS-TEP Resto',
+                'LongName' => 'FS-TEP Resto search service',
                 'Description' => 'Search on all collections',
-                'Tags' => 'resto fstep f-tep',
-                'Developer' => 'resto team, F-TEP team',
+                'Tags' => 'resto fstep fs-tep',
+                'Developer' => 'resto team, FS-TEP team',
                 'Contact' => 'info@foodsecurity-tep.eo.esa.int',
                 'Query' => 'europe 2015',
                 'Attribution' => 'resto framework. Copyright 2015, All Rights Reserved'

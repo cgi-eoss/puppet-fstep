@@ -27,7 +27,7 @@ class fstep::proxy::shibboleth (
     'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SLO/Redirect'
   },
   $sp_name_id_formats               = ['urn:oasis:names:tc:SAML:2.0:nameid-format:transient'],
-  $org_name                         = 'f-tep',
+  $org_name                         = 'fs-tep',
   $org_display_name                 = 'Food Security TEP',
   $attribute_map                    = [
     { 'name' => 'urn:mace:dir:attribute-def:cn', 'id' => 'Eosso-Person-commonName' },

@@ -1,15 +1,15 @@
 class fstep::worker (
-  $component_name           = 'f-tep-worker',
+  $component_name           = 'fs-tep-worker',
 
-  $install_path             = '/var/f-tep/worker',
-  $config_file              = '/var/f-tep/worker/f-tep-worker.conf',
-  $logging_config_file      = '/var/f-tep/worker/log4j2.xml',
-  $properties_file          = '/var/f-tep/worker/application.properties',
+  $install_path             = '/var/fs-tep/worker',
+  $config_file              = '/var/fs-tep/worker/fs-tep-worker.conf',
+  $logging_config_file      = '/var/fs-tep/worker/log4j2.xml',
+  $properties_file          = '/var/fs-tep/worker/application.properties',
 
   $service_enable           = true,
   $service_ensure           = 'running',
 
-  # f-tep-worker application.properties config
+  # fs-tep-worker application.properties config
   $application_port         = undef,
   $grpc_port                = undef,
 
@@ -54,11 +54,11 @@ class fstep::worker (
   $real_serviceregistry_url = pick($serviceregistry_url,
     "http://${serviceregistry_creds}@${serviceregistry_server}/eureka/")
 
-  ensure_packages(['f-tep-worker'], {
+  ensure_packages(['fs-tep-worker'], {
     ensure => 'latest',
-    name   => 'f-tep-worker',
+    name   => 'fs-tep-worker',
     tag    => 'fstep',
-    notify => Service['f-tep-worker'],
+    notify => Service['fs-tep-worker'],
   })
 
   file { ["${fstep::common::datadir::data_basedir}/${cache_dir}", "${fstep::common::datadir::data_basedir}/${jobs_dir}"]:
@@ -77,14 +77,14 @@ class fstep::worker (
     content =>
       'JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"'
     ,
-    require => Package['f-tep-worker'],
-    notify  => Service['f-tep-worker'],
+    require => Package['fs-tep-worker'],
+    notify  => Service['fs-tep-worker'],
   }
 
   ::fstep::logging::log4j2 { $logging_config_file:
     fstep_component => $component_name,
-    require        => Package['f-tep-worker'],
-    notify         => Service['f-tep-worker'],
+    require        => Package['fs-tep-worker'],
+    notify         => Service['fs-tep-worker'],
   }
 
   file { $properties_file:
@@ -106,16 +106,16 @@ class fstep::worker (
       'ipt_download_base_url' => $ipt_download_base_url,
       'custom_properties'     => $custom_config_properties,
     }),
-    require => Package['f-tep-worker'],
-    notify  => Service['f-tep-worker'],
+    require => Package['fs-tep-worker'],
+    notify  => Service['fs-tep-worker'],
   }
 
-  service { 'f-tep-worker':
+  service { 'fs-tep-worker':
     ensure     => $service_ensure,
     enable     => $service_enable,
     hasrestart => true,
     hasstatus  => true,
-    require    => [Package['f-tep-worker'], File[$properties_file]],
+    require    => [Package['fs-tep-worker'], File[$properties_file]],
   }
 
 }

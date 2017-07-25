@@ -17,13 +17,13 @@ class fstep::common::apache {
       protocol => 'tcp'
     }
 
-    ::selinux::port { 'f-tep-server':
+    ::selinux::port { 'fs-tep-server':
       seltype  => 'http_port_t',
       port     => $fstep::globals::server_application_port,
       protocol => 'tcp'
     }
 
-    ::selinux::port { 'f-tep-worker':
+    ::selinux::port { 'fs-tep-worker':
       seltype  => 'http_port_t',
       port     => $fstep::globals::worker_application_port,
       protocol => 'tcp'

@@ -1,15 +1,15 @@
 class fstep::zoomanager (
-  $component_name           = 'f-tep-zoomanager',
+  $component_name           = 'fs-tep-zoomanager',
 
-  $install_path             = '/var/f-tep/zoomanager',
-  $config_file              = '/var/f-tep/zoomanager/f-tep-zoomanager.conf',
-  $logging_config_file      = '/var/f-tep/zoomanager/log4j2.xml',
-  $properties_file          = '/var/f-tep/zoomanager/application.properties',
+  $install_path             = '/var/fs-tep/zoomanager',
+  $config_file              = '/var/fs-tep/zoomanager/fs-tep-zoomanager.conf',
+  $logging_config_file      = '/var/fs-tep/zoomanager/log4j2.xml',
+  $properties_file          = '/var/fs-tep/zoomanager/application.properties',
 
   $service_enable           = true,
   $service_ensure           = 'running',
 
-  # f-tep-zoomanager application.properties config
+  # fs-tep-zoomanager application.properties config
   $application_port         = undef,
   $grpc_port                = undef,
 
@@ -21,7 +21,7 @@ class fstep::zoomanager (
 
   $zcfg_path                = '/var/www/cgi-bin',
   $classpath_jar_files      = [],
-  $services_stub_jar        = '/var/www/cgi-bin/jars/f-tep-services.jar',
+  $services_stub_jar        = '/var/www/cgi-bin/jars/fs-tep-services.jar',
 
   $custom_config_properties = { },
 ) {
@@ -47,11 +47,11 @@ class fstep::zoomanager (
   # JDK is necessary to compile service stubs
   ensure_packages(['java-1.8.0-openjdk-devel'])
 
-  ensure_packages(['f-tep-zoomanager'], {
+  ensure_packages(['fs-tep-zoomanager'], {
     ensure => 'latest',
-    name   => 'f-tep-zoomanager',
+    name   => 'fs-tep-zoomanager',
     tag    => 'fstep',
-    notify => Service['f-tep-zoomanager'],
+    notify => Service['fs-tep-zoomanager'],
   })
 
   file { $config_file:
@@ -61,14 +61,14 @@ class fstep::zoomanager (
     content => 'JAVA_HOME=/etc/alternatives/java_sdk
 JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager"'
     ,
-    require => Package['f-tep-zoomanager'],
-    notify  => Service['f-tep-zoomanager'],
+    require => Package['fs-tep-zoomanager'],
+    notify  => Service['fs-tep-zoomanager'],
   }
 
   ::fstep::logging::log4j2 { $logging_config_file:
     fstep_component => $component_name,
-    require        => Package['f-tep-zoomanager'],
-    notify         => Service['f-tep-zoomanager'],
+    require        => Package['fs-tep-zoomanager'],
+    notify         => Service['fs-tep-zoomanager'],
   }
 
   file { $properties_file:
@@ -85,16 +85,16 @@ JAVA_OPTS="-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLogge
       'services_stub_jar'   => $services_stub_jar,
       'custom_properties'   => $custom_config_properties,
     }),
-    require => Package['f-tep-zoomanager'],
-    notify  => Service['f-tep-zoomanager'],
+    require => Package['fs-tep-zoomanager'],
+    notify  => Service['fs-tep-zoomanager'],
   }
 
-  service { 'f-tep-zoomanager':
+  service { 'fs-tep-zoomanager':
     ensure     => $service_ensure,
     enable     => $service_enable,
     hasrestart => true,
     hasstatus  => true,
-    require    => [Package['f-tep-zoomanager'], File[$properties_file]],
+    require    => [Package['fs-tep-zoomanager'], File[$properties_file]],
   }
 
 }

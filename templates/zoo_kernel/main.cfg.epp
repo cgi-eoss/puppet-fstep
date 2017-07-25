@@ -25,7 +25,7 @@
 | -%>
 # Managed by Puppet
 [headers]
-X-Powered-By=F-TEP
+X-Powered-By=FS-TEP
 
 [main]
 encoding = utf-8
