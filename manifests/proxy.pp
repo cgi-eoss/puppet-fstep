@@ -27,6 +27,7 @@ class fstep::proxy (
 
   include ::apache::mod::headers
   include ::apache::mod::proxy
+  include ::apache::mod::rewrite
 
   $default_proxy_config = {
     docroot    => '/var/www/html',
@@ -201,15 +202,30 @@ class fstep::proxy (
         'set X-Forwarded-Proto "https"'
       ],
       directories      => $directories,
+      # default rewrite requested by ESA scan
+      rewrites => [
+        {
+          rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
+          rewrite_rule => ['.* - [F]']
+        }
+      ],
       proxy_pass       => $proxy_pass,
       proxy_pass_match => $proxy_pass_match,
-      *                => $default_proxy_config
+      *                => $default_proxy_config,
+      
     }
   } else {
     apache::vhost { $vhost_name:
       port             => '80',
       default_vhost    => true,
       directories      => $directories,
+      # default rewrite requested by ESA scan
+      rewrites => [
+        {
+          rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
+          rewrite_rule => ['.* - [F]']
+        }
+      ],
       proxy_pass       => $proxy_pass,
       proxy_pass_match => $proxy_pass_match,
       *                => $default_proxy_config
