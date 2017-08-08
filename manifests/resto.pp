@@ -25,7 +25,10 @@ class fstep::resto (
   include ::apache::mod::proxy
 
   # apache::mod::proxy_fcgi does not include the package on CentOS 6
-  ensure_resource('apache::mod', 'proxy_fcgi', { package => 'mod_proxy_fcgi', require => Class['apache::mod::proxy'] })
+  case $::operatingsystemmajrelease {
+    '6': { ensure_resource('apache::mod', 'proxy_fcgi', { package => 'mod_proxy_fcgi', require => Class['apache::mod::proxy'] }) }
+    default: { include ::apache::mod::proxy_fcgi }
+  }
 
   ensure_packages(['resto'], {
     ensure => 'latest',

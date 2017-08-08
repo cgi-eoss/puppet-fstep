@@ -38,10 +38,10 @@ class fstep::wps (
   $classpath_jar_files        = ['/var/www/cgi-bin/jars/fs-tep-zoolib.jar'],
   $services_stub_jar_filename = 'fs-tep-services.jar',
 
-  $env_config                 = { },
-  $fstep_config                = { },
-  $java_config                = { },
-  $other_config               = { },
+  $env_config                 = {},
+  $fstep_config               = {},
+  $java_config                = {},
+  $other_config               = {},
 ) {
 
   require ::fstep::globals
@@ -96,13 +96,13 @@ class fstep::wps (
     $default_fstep_config = {
       'zooConfKeyJobId'          => 'uusid',
       'zooConfKeyUsernameHeader' => "HTTP_${fstep::globals::username_request_header}",
-      'fstepServerGrpcHost'       => $fstep::globals::server_hostname,
-      'fstepServerGrpcPort'       => $fstep::globals::server_grpc_port,
+      'fstepServerGrpcHost'      => $fstep::globals::server_hostname,
+      'fstepServerGrpcPort'      => $fstep::globals::server_grpc_port,
     }
 
     $logging_config_file = "${cgi_path}/log4j2.xml"
     ::fstep::logging::log4j2 { $logging_config_file:
-      fstep_component    => 'fs-tep-zoolib',
+      fstep_component   => 'fs-tep-zoolib',
       is_spring_context => false,
     }
     $default_java_config = {
@@ -135,7 +135,7 @@ class fstep::wps (
         'db_pass'        => $real_db_pass,
 
         'env_config'     => merge($default_env_config, $env_config),
-        'fstep_config'    => merge($default_fstep_config, $fstep_config),
+        'fstep_config'   => merge($default_fstep_config, $fstep_config),
         'java_config'    => merge($default_java_config, $java_config),
         'other_config'   => $other_config,
       }),
@@ -195,16 +195,14 @@ class fstep::wps (
       ensure => true
     }
     selinux::fcontext { 'data-path-rw-context':
-      context  => 'httpd_sys_rw_content_t',
-      pathname => "${data_basedir}/${data_path}"
+      seltype  => 'httpd_sys_rw_content_t',
+      pathspec => "${data_basedir}/${data_path}(/.*)?"
     }
     selinux::fcontext { 'tmp-path-rw-context':
-      context  => 'httpd_sys_rw_content_t',
-      pathname => "${data_basedir}/${tmp_path}"
+      seltype  => 'httpd_sys_rw_content_t',
+      pathspec => "${data_basedir}/${tmp_path}(/.*)?"
     }
-    selinux::module { 'fstep_wps':
-      ensure  => 'present',
-      content => "
+    $module_content = @("END")
 module fstep_wps 1.0;
 
 require {
@@ -222,7 +220,11 @@ allow httpd_sys_script_t port_t:tcp_socket name_connect;
 allow httpd_sys_script_t proc_net_t:file { read getattr open };
 allow httpd_sys_script_t sysctl_net_t:dir search;
 allow httpd_sys_script_t sysctl_net_t:file read;
-",
+|END
+    selinux::module { 'fstep_wps':
+      ensure     => 'present',
+      content_te => $module_content,
+      builder    => 'simple'
     }
   }
 
