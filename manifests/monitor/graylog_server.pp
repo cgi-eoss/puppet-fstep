@@ -27,7 +27,8 @@ class fstep::monitor::graylog_server (
   class { ::elasticsearch:
     java_install => false,
     manage_repo  => true,
-    repo_version => '2.x',
+    version      => '5.5.1',
+    repo_version => '5.x',
   } ->
     ::elasticsearch::instance { 'graylog':
       config => {
@@ -37,10 +38,11 @@ class fstep::monitor::graylog_server (
     }
 
   class { ::graylog::repository:
-    version => '2.2'
+    version => '2.3'
   } ->
     class { ::graylog::server:
-      config => {
+      package_version => '2.3.0-7',
+      config          => {
         password_secret          => $real_db_secret, # Fill in your password secret
         root_password_sha2       => $real_db_sha256, # Fill in your root password hash
         web_listen_uri           => "http://${listen_host}:${real_listen_port}${real_context_path}/",
