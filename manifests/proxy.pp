@@ -16,8 +16,10 @@ class fstep::proxy (
   $context_path_gui       = undef,
 
   $tls_cert_path          = '/etc/pki/tls/certs/fstep_portal.crt',
+  $tls_chain_path         = '/etc/pki/tls/certs/fstep_portal.chain.crt',
   $tls_key_path           = '/etc/pki/tls/private/fstep_portal.key',
   $tls_cert               = undef,
+  $tls_chain              = undef,
   $tls_key                = undef,
 ) {
 
@@ -33,6 +35,16 @@ class fstep::proxy (
     docroot    => '/var/www/html',
     vhost_name => '_default_', # The default landing site should always be Drupal
     proxy_dest => 'http://fstep-drupal', # Drupal is always mounted at the base_url
+    rewrites   => [
+      {
+        rewrite_rule => ['^/app$ /app/ [R]']
+      },
+      {
+        # default rewrite requested by ESA scan
+        rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
+        rewrite_rule => ['.* - [F]']
+      }
+    ]
   }
 
   $real_context_path_geoserver = pick($context_path_geoserver, $fstep::globals::context_path_geoserver)
@@ -58,7 +70,8 @@ class fstep::proxy (
   $default_proxy_pass = [
     {
       'path'   => $real_context_path_geoserver,
-      'url'    => "http://${fstep::globals::geoserver_hostname}:${fstep::globals::geoserver_port}${real_context_path_geoserver}",
+      'url'    =>
+      "http://${fstep::globals::geoserver_hostname}:${fstep::globals::geoserver_port}${real_context_path_geoserver}",
       'params' => { 'retry' => '0' }
     },
     {
@@ -78,7 +91,8 @@ class fstep::proxy (
     },
     {
       'path'   => $real_context_path_api_v2,
-      'url'    => "http://${fstep::globals::server_hostname}:${fstep::globals::server_application_port}${real_context_path_api_v2}",
+      'url'    =>
+      "http://${fstep::globals::server_hostname}:${fstep::globals::server_application_port}${real_context_path_api_v2}",
       'params' => { 'retry' => '0' }
     },
     {
@@ -88,12 +102,14 @@ class fstep::proxy (
     },
     {
       'path'   => $real_context_path_logs,
-      'url'    => "http://${fstep::globals::monitor_hostname}:${fstep::globals::graylog_port}${fstep::globals::graylog_context_path}",
+      'url'    => "http://${fstep::globals::monitor_hostname}:${fstep::globals::graylog_port}${
+        fstep::globals::graylog_context_path}",
       'params' => { 'retry' => '0' }
     },
     {
       'path'   => $real_context_path_eureka,
-      'url'    => "http://${fstep::globals::server_hostname}:${fstep::globals::serviceregistry_application_port}/eureka",
+      'url'    =>
+      "http://${fstep::globals::server_hostname}:${fstep::globals::serviceregistry_application_port}/eureka",
       'params' => { 'retry' => '0' }
     }
   ]
@@ -184,6 +200,19 @@ class fstep::proxy (
       content => $tls_cert,
     }
 
+    if $tls_chain {
+      file { $tls_chain_path:
+        ensure  => present,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => $tls_chain,
+      }
+      $real_tls_chain_path = $tls_chain_path
+    } else {
+      $real_tls_chain_path = undef
+    }
+
     file { $tls_key_path:
       ensure  => present,
       mode    => '0600',
@@ -192,40 +221,34 @@ class fstep::proxy (
       content => $tls_key,
     }
 
+    apache::vhost { "redirect ${vhost_name} non-ssl":
+      servername      => $vhost_name,
+      port            => '80',
+      docroot         => '/var/www/redirect',
+      redirect_status => 'permanent',
+      redirect_dest   => "https://${vhost_name}/"
+    }
     apache::vhost { $vhost_name:
+      servername       => $vhost_name,
       port             => '443',
       ssl              => true,
       ssl_cert         => $tls_cert_path,
+      ssl_chain        => $real_tls_chain_path,
       ssl_key          => $tls_key_path,
       default_vhost    => true,
       request_headers  => [
         'set X-Forwarded-Proto "https"'
       ],
       directories      => $directories,
-      # default rewrite requested by ESA scan
-      rewrites => [
-        {
-          rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
-          rewrite_rule => ['.* - [F]']
-        }
-      ],
       proxy_pass       => $proxy_pass,
       proxy_pass_match => $proxy_pass_match,
       *                => $default_proxy_config,
-      
     }
   } else {
     apache::vhost { $vhost_name:
       port             => '80',
       default_vhost    => true,
       directories      => $directories,
-      # default rewrite requested by ESA scan
-      rewrites => [
-        {
-          rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
-          rewrite_rule => ['.* - [F]']
-        }
-      ],
       proxy_pass       => $proxy_pass,
       proxy_pass_match => $proxy_pass_match,
       *                => $default_proxy_config
