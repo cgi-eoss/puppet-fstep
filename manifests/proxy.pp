@@ -137,16 +137,16 @@ class fstep::proxy (
     file { $sp_cert_path:
       ensure  => present,
       mode    => '0644',
-      owner   => 'root',
-      group   => 'root',
+      owner   => 'shibd',
+      group   => 'shibd',
       content => $sp_cert,   
     }
 
     file { $sp_key_path:
       ensure  => present,
       mode    => '0400',
-      owner   => 'root',
-      group   => 'root',
+      owner   => 'shibd',
+      group   => 'shibd',
       content => $sp_key,   
     }
 
