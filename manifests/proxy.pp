@@ -135,18 +135,18 @@ class fstep::proxy (
 
     # add the SSO certificate (which may be different than the portal one)
     file { $sp_cert_path:
-      ensure => present,
-      mode => ’0644’,
-      owner = > ‘root’,
-      group => ‘root’,
+      ensure  => present,
+      mode    => ’0644’,
+      owner   => ‘root’,
+      group   => ‘root’,
       content => $sp_cert,   
     }
 
     file { $sp_key_path:
-      ensure => present,
-      mode => ’0400’,
-      owner = > ‘root’,
-      group => ‘root’,
+      ensure  => present,
+      mode    => ’0400’,
+      owner   => ‘root’,
+      group   => ‘root’,
       content => $sp_key,   
     }
 
