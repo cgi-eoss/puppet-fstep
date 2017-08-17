@@ -7,8 +7,8 @@ class fstep::proxy::shibboleth (
 
   $clock_skew                       = 180,
 
-  $sp_id                            = 'https://foodsecurity-tep.eo.esa.int/shibboleth',
-  $home_url                         = 'https://foodsecurity-tep.eo.esa.int/',
+  $sp_id                            = 'https://fsdev.eoss-cloud.it/shibboleth',
+  $home_url                         = 'https://fsdev.eoss-cloud.it/',
   $app_defaults_signing             = 'false',
   $app_defaults_encryption          = 'false',
   $app_defaults_remote_user         = 'Eosso-Person-commonName',
@@ -17,16 +17,16 @@ class fstep::proxy::shibboleth (
   $session_timeout                  = 3600,
   $session_check_address            = false,
   $session_consistent_address       = false,
-  $support_contact                  = 'eo-gpod@esa.int',
+  $support_contact                  = 'info@eoss-cloud.it',
   $idp_id                           = 'https://eo-sso-idp.evo-pdgs.com:443/shibboleth',
   $idp_scope                        = 'evo-pdgs.com',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
-      'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
+      'location' => 'https://fsdev.eoss-cloud.it/Shibboleth.sso/SAML2/Artifact' },
   ],
   $sp_slo_service                   = {
     'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-    'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SLO/Redirect'
+    'location' => 'https://fsdev.eoss-cloud.it/Shibboleth.sso/SLO/Redirect'
   },
   $sp_name_id_formats               = ['urn:oasis:names:tc:SAML:2.0:nameid-format:transient'],
   $org_name                         = 'fs-tep',
@@ -99,7 +99,7 @@ class fstep::proxy::shibboleth (
     mode    => '0644',
     owner   => 'shibd',
     group   => 'shibd',
-    content => $fstep::proxy::tls_cert,
+    content => $fstep::proxy::sp_cert,
     require => Package['shibboleth'],
     notify  => Service['shibd'],
   }
@@ -109,7 +109,7 @@ class fstep::proxy::shibboleth (
     mode    => '0600',
     owner   => 'shibd',
     group   => 'shibd',
-    content => $fstep::proxy::tls_key,
+    content => $fstep::proxy::sp_key,
     require => Package['shibboleth'],
     notify  => Service['shibd'],
   }
@@ -177,7 +177,7 @@ class fstep::proxy::shibboleth (
     group   => 'root',
     content => epp('fstep/proxy/shibboleth/sp-metadata.xml.epp', {
       'sp_id'                       => $sp_id,
-      'sp_cert'                     => $fstep::proxy::tls_cert,
+      'sp_cert'                     => $fstep::proxy::sp_cert,
       'assertion_consumer_services' => $sp_assertion_consumer_services,
       'slo_service'                 => $sp_slo_service,
       'name_id_formats'             => $sp_name_id_formats,
