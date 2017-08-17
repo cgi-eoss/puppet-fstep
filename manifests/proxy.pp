@@ -21,6 +21,11 @@ class fstep::proxy (
   $tls_cert               = undef,
   $tls_chain              = undef,
   $tls_key                = undef,
+
+  $sp_cert_path           = '/etc/shibboleth/sp-cert.pem',
+  $sp_key_path            = '/etc/shibboleth/sp-key.pem',
+  $sp_cert                = undef,
+  $sp_key                 = undef,
 ) {
 
   require ::fstep::globals
@@ -185,6 +190,24 @@ class fstep::proxy (
     $directories = $default_directories
     $proxy_pass = $default_proxy_pass
     $proxy_pass_match = $default_proxy_pass_match
+
+    # add the SSO certificate (which may be different than the portal one)
+    file { sp_cert_path:
+      ensure => present,
+      mode => ’0644’,
+      owner = > ‘root’,
+      group => ‘root’,
+      content => $sp_cert,   
+    }
+
+    file { sp_key_path:
+      ensure => present,
+      mode => ’0400’,
+      owner = > ‘root’,
+      group => ‘root’,
+      content => $sp_key,   
+    }
+
   }
 
   if $enable_ssl {
