@@ -134,7 +134,7 @@ class fstep::proxy (
     contain ::fstep::proxy::shibboleth
 
     # add the SSO certificate (which may be different than the portal one)
-    file { sp_cert_path:
+    file { $sp_cert_path:
       ensure => present,
       mode => ’0644’,
       owner = > ‘root’,
@@ -142,7 +142,7 @@ class fstep::proxy (
       content => $sp_cert,   
     }
 
-    file { sp_key_path:
+    file { $sp_key_path:
       ensure => present,
       mode => ’0400’,
       owner = > ‘root’,
