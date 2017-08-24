@@ -21,6 +21,11 @@ class fstep::proxy (
   $tls_cert               = undef,
   $tls_chain              = undef,
   $tls_key                = undef,
+
+  $sp_cert_path           = '/etc/shibboleth/sp-cert.pem',
+  $sp_key_path            = '/etc/shibboleth/sp-key.pem',
+  $sp_cert                = undef,
+  $sp_key                 = undef,
 ) {
 
   require ::fstep::globals
@@ -127,6 +132,23 @@ class fstep::proxy (
       fail("fstep::proxy requres \$tls_cert and \$tls_key to be set if \$enable_sso is true")
     }
     contain ::fstep::proxy::shibboleth
+
+    # add the SSO certificate (which may be different than the portal one)
+    file { $sp_cert_path:
+      ensure  => present,
+      mode    => '0644',
+      owner   => 'shibd',
+      group   => 'shibd',
+      content => $sp_cert,   
+    }
+
+    file { $sp_key_path:
+      ensure  => present,
+      mode    => '0400',
+      owner   => 'shibd',
+      group   => 'shibd',
+      content => $sp_key,   
+    }
 
     # Add the /Shibboleth.sso SP callback location, enable the minimal support for the root, and add secured paths
     $directories = concat([

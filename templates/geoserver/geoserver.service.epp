@@ -1,0 +1,16 @@
+<%- |
+    String $init_script,
+| -%>
+[Unit]
+Description=GeoServer
+After=network.target
+After=remote-fs.target
+
+[Service]
+Type=oneshot
+ExecStart=<%= $init_script %> start
+ExecStop=<%= $init_script %> stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
