@@ -7,10 +7,11 @@ class fstep::geoserver (
   $geoserver_data_dir     = '/opt/geoserver-data',
   $config_file            = '/etc/default/geoserver',
   $init_script            = '/etc/init.d/geoserver',
-  $geoserver_version      = '2.10.0',
-  $geoserver_download_url = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.10.0/geoserver-2.10.0-bin.zip',
+  $systemd_unit           = '/usr/lib/systemd/system/geoserver.service',
+  $geoserver_version      = '2.11.2',
+  $geoserver_download_url = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/geoserver-2.11.2-bin.zip',
   $geoserver_extension    = 'zip',
-  $geoserver_digest       = '86d737c88ac60bc30efd65d3113925ee5c7502db',
+  $geoserver_digest       = '164b824a83c3e5f7e1806d9c1ef82afdede70533',
   $geoserver_digest_type  = 'sha1',
   $geoserver_port         = undef,
   $geoserver_stopport     = undef,
@@ -37,7 +38,7 @@ class fstep::geoserver (
   ensure_packages(['unzip'])
 
   # This is created by the ::archive resource
-  $geoserver_path = "${user_home}/geoserver-2.10.0"
+  $geoserver_path = "${user_home}/geoserver-2.11.2"
 
   # Download and unpack the standalone platform-independent binary distribution
   $archive = "geoserver-${geoserver_version}"
@@ -95,12 +96,21 @@ END
     require => [User[$user], Archive[$archive], File[$config_file]],
   }
 
+  file { $systemd_unit:
+    ensure  => present,
+    mode    => '0644',
+    content => epp('fstep/geoserver/geoserver.service.epp', {
+      'init_script' => $init_script,
+    }),
+    require => [User[$user], Archive[$archive], File[$init_script]],
+  }
+
   service { 'geoserver':
     ensure     => running,
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    require    => [File[$init_script]],
+    require    => [File[$systemd_unit]],
   }
 
 }
