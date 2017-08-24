@@ -18,7 +18,7 @@ class fstep::proxy::shibboleth (
   $session_check_address            = false,
   $session_consistent_address       = false,
   $support_contact                  = 'eo-gpod@esa.int',
-  $idp_id                           = 'https://eo-sso-idp.evo-pdgs.com:443/shibboleth',
+  $idp_id                           = 'https://eo-sso-idp.eo.esa.int/shibboleth',
   $idp_scope                        = 'evo-pdgs.com',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
@@ -44,14 +44,14 @@ class fstep::proxy::shibboleth (
   ],
   $idp_slo_service                  = {
     'binding'           => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-    'location'          => 'https://eo-sso-idp.evo-pdgs.com:443/idp/profile/SAML2/Redirect/SLO',
-    'response_location' => 'https://eo-sso-idp.evo-pdgs.com:443/idp/profile/SAML2/Redirect/SLO'
+    'location'          => 'https://eo-sso-idp.eo.esa.int/idp/profile/SAML2/Redirect/SLO',
+    'response_location' => 'https://eo-sso-idp.eo.esa.int/idp/profile/SAML2/Redirect/SLO'
   },
   $idp_sso_services                 = [
     { 'binding'  => 'urn:mace:shibboleth:1.0:profiles:AuthnRequest',
-      'location' => 'https://eo-sso-idp.evo-pdgs.com:443/idp/profile/Shibboleth/SSO' },
+      'location' => 'https://eo-sso-idp.eo.esa.int/idp/profile/Shibboleth/SSO' },
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
-      'location' => 'https://eo-sso-idp.evo-pdgs.com:443/idp/profile/SAML2/Redirect/SSO' },
+      'location' => 'https://eo-sso-idp.eo.esa.int/idp/profile/SAML2/Redirect/SSO' },
   ],
   $idp_name_id_formats              = [
     'urn:mace:shibboleth:1.0:nameIdentifier',
