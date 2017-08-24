@@ -93,27 +93,6 @@ class fstep::proxy::shibboleth (
     require    => Package['shibboleth'],
   })
 
-  # Re-use the key/certificate from the shared config
-  file { "${config_dir}/sp-cert.pem":
-    ensure  => present,
-    mode    => '0644',
-    owner   => 'shibd',
-    group   => 'shibd',
-    content => $fstep::proxy::sp_cert,
-    require => Package['shibboleth'],
-    notify  => Service['shibd'],
-  }
-
-  file { "${config_dir}/sp-key.pem":
-    ensure  => present,
-    mode    => '0600',
-    owner   => 'shibd',
-    group   => 'shibd',
-    content => $fstep::proxy::sp_key,
-    require => Package['shibboleth'],
-    notify  => Service['shibd'],
-  }
-
   file { "${config_dir}/shibboleth2.xml":
     ensure  => present,
     mode    => '0644',
