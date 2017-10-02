@@ -67,6 +67,7 @@ class fstep::proxy::shibboleth (
 ) {
 
   require ::epel
+  require ::fstep::globals
   require ::fstep::repo::shibboleth
 
   ensure_packages(['shibboleth'], {
