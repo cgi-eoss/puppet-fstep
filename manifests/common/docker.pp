@@ -2,7 +2,11 @@ class fstep::common::docker (
 ) {
 
   require ::fstep::common::user
+  require ::fstep::globals
 
-  contain ::docker
+  class { '::docker':
+    docker_users => [$fstep::globals::user],
+  }
 
 }
+
