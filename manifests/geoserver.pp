@@ -121,7 +121,7 @@ END
   # csw plugin - http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-csw-plugin.zip
   # WCS 2.0 EO plugin http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-wcs2_0-eo-plugin.zip
 
-  $plugins_dir = "${geoserver_path}/webapps/geoserver/WEB-INF/libs"
+  $plugins_dir = "${geoserver_path}/webapps/geoserver/WEB-INF/lib"
   archive { $ncwms_plugin:
     path          => "${user_home}/${ncwms_plugin}.zip",
     source        => $ncwms_download_url,
