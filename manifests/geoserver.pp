@@ -18,7 +18,7 @@ class fstep::geoserver (
   $geoserver_stopport     = undef,
 
   $ncwms_plugin           = 'geoserver-2.11-SNAPSHOT-ncwms-plugin',
-  $wmtsS_plugin            = 'geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin',
+  $wmts_plugin            = 'geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin',
   $csw_plugin             = 'geoserver-2.11.2-csw-plugin',
   $wcs_eo_plugin          = 'geoserver-2.11.2-wcs2_0-eo-plugin',
 
