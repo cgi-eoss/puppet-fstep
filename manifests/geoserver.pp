@@ -17,14 +17,14 @@ class fstep::geoserver (
   $geoserver_port         = undef,
   $geoserver_stopport     = undef,
 
-  $ncWMS_plugin           = 'geoserver-2.11-SNAPSHOT-ncwms-plugin'
-  $WMTS_plugin            = 'geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin'
-  $CSW_plugin             = 'geoserver-2.11.2-csw-plugin'
-  $WCS_EO_plugin          = 'geoserver-2.11.2-wcs2_0-eo-plugin'
+  $ncWMS_plugin           = 'geoserver-2.11-SNAPSHOT-ncwms-plugin',
+  $WMTS_plugin            = 'geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin',
+  $CSW_plugin             = 'geoserver-2.11.2-csw-plugin',
+  $WCS_EO_plugin          = 'geoserver-2.11.2-wcs2_0-eo-plugin',
 
-  $ncWMS_download_url     = 'http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-ncwms-plugin.zip'
-  $WMTS_download_url      = 'http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin.zip'
-  $CSW_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-csw-plugin.zip'
+  $ncWMS_download_url     = 'http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-ncwms-plugin.zip',
+  $WMTS_download_url      = 'http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin.zip',
+  $CSW_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-csw-plugin.zip',
   $WCS_EO_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-wcs2_0-eo-plugin.zip'
 ) {
 
