@@ -32,6 +32,7 @@ class fstep::globals (
   $monitor_hostname                 = 'fstep-monitor',
   $resto_hostname                   = 'fstep-resto',
   $default_gui_hostname             = 'fstep-worker',
+  $ui_hostname                      = 'fstep-ui',
   $kubernetes_master_hostname       = 'fskubermaster',
 
   $hosts_override                   = { },
