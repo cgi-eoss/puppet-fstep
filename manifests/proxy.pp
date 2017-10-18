@@ -120,7 +120,7 @@ class fstep::proxy (
     },
     {
       'path'   => $real_context_path_analyst,
-      'url'    => "http://${fstep::globals::server_hostname}/analyst",
+      'url'    => "http://${fstep::globals::ui_hostname}/analyst",
       'params' => { 'retry' => '0' }
     }
   ]
