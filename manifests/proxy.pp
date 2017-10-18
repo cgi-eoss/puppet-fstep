@@ -14,6 +14,7 @@ class fstep::proxy (
   $context_path_logs      = undef,
   $context_path_eureka    = undef,
   $context_path_gui       = undef,
+  $context_path_analyst   = undef,
 
   $tls_cert_path          = '/etc/pki/tls/certs/fstep_portal.crt',
   $tls_chain_path         = '/etc/pki/tls/certs/fstep_portal.chain.crt',
@@ -60,6 +61,7 @@ class fstep::proxy (
   $real_context_path_monitor = pick($context_path_monitor, $fstep::globals::context_path_monitor)
   $real_context_path_logs = pick($context_path_logs, $fstep::globals::context_path_logs)
   $real_context_path_eureka = pick($context_path_eureka, $fstep::globals::context_path_eureka)
+  $real_context_path_analyst = pick($context_path_analyst, $fstep::globals::context_path_analyst)
 
   # Directory/Location directives - cannot be an empty array...
   $default_directories = [
@@ -113,8 +115,12 @@ class fstep::proxy (
     },
     {
       'path'   => $real_context_path_eureka,
-      'url'    =>
-      "http://${fstep::globals::server_hostname}:${fstep::globals::serviceregistry_application_port}/eureka",
+      'url'    => "http://${fstep::globals::server_hostname}:${fstep::globals::serviceregistry_application_port}/eureka",
+      'params' => { 'retry' => '0' }
+    },
+    {
+      'path'   => $real_context_path_analyst,
+      'url'    => "http://${fstep::globals::server_hostname}/analyst",
       'params' => { 'retry' => '0' }
     }
   ]
