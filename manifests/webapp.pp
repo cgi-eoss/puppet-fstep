@@ -37,7 +37,7 @@ class fstep::webapp (
       'api_v2_url'       => $real_api_v2_url,
       'sso_url'          => $sso_url,
       'fstep_portal_url' => $real_portal_url,
-      'analyst_url'      => $real_analyst_url
+      'analyst_url'      => $real_analyst_url,
       'mapbox_token'     => $mapbox_token,
     }),
     require => Package['fs-tep-portal'],
