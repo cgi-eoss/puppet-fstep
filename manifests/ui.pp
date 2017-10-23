@@ -1,5 +1,5 @@
 class fstep::ui (
-  $app_path        = '/var/www/html',
+  $app_path        = '/var/www/html/analyst',
 ) {
 
   require ::fstep::globals
