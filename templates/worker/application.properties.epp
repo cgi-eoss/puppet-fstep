@@ -16,6 +16,10 @@
     String $ipt_auth_endpoint,
     String $ipt_auth_domain,
     String $ipt_download_base_url,
+    
+    String $broker_url,
+    String $broker_username,
+    String $broker_password,
 
     Hash $custom_properties
 | -%>
@@ -49,6 +53,11 @@ fstep.worker.jobEnv.baseDir=<%= $jobs_basedir %>
 fstep.worker.downloader.ipt.authEndpoint=<%= $ipt_auth_endpoint %>
 fstep.worker.downloader.ipt.authDomain=<%= $ipt_auth_domain %>
 fstep.worker.downloader.ipt.downloadBaseUrl=<%= $ipt_download_base_url %>
+
+# Broker configuration
+spring.activemq.broker-url=<%= $broker_url %>
+spring.activemq.user=<%= $broker_username %>
+spring.activemq.password=<%= $broker_password %>
 
 # Custom manually-appended configuration properties
 <% $custom_properties.each | $key, $value | { %>

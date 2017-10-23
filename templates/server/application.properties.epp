@@ -42,7 +42,11 @@
     String $resto_output_products_model,
     String $resto_username,
     String $resto_password,
-
+    
+    String $broker_url,
+    String $broker_username,
+    String $broker_password,
+	
     Hash $custom_properties
 | -%>
 # Managed by Puppet
@@ -111,6 +115,11 @@ fstep.catalogue.resto.collection.outputProducts=<%= $resto_output_products_colle
 fstep.catalogue.resto.collection.outputProductsModel=<%= $resto_output_products_model %>
 fstep.catalogue.resto.username=<%= $resto_username %>
 fstep.catalogue.resto.password=<%= $resto_password %>
+
+# Broker configuration
+spring.activemq.broker-url=<%= $broker_url %>
+spring.activemq.user=<%= $broker_username %>
+spring.activemq.password=<%= $broker_password %>
 
 # Custom manually-appended configuration properties
 <% $custom_properties.each | $key, $value | { %>

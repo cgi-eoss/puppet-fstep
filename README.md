@@ -49,6 +49,7 @@ classes:
 * `fstep::webapp`
 * `fstep::worker`
 * `fstep::wps`
+* `fstep::broker`
 
 Configuration parameters shared by these classes may be set via `fstep::globals`.
 
