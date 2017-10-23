@@ -58,7 +58,7 @@ class fstep::worker (
   $real_serviceregistry_url = pick($serviceregistry_url,
     "http://${serviceregistry_creds}@${serviceregistry_server}/eureka/")
     
-  $real_broker_url= pick($broker_url, ${fstep::globals::base_url}${fstep::globals::context_path_broker}/")
+  $real_broker_url= pick($broker_url, "${fstep::globals::base_url}${fstep::globals::context_path_broker}/")
   $real_broker_username = pick($broker_username, $fstep::globals::broker_fstep_username)
   $real_broker_password = pick($broker_password, $fstep::globals::broker_fstep_password)
      
