@@ -52,7 +52,8 @@ class fstep::proxy (
         rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
         rewrite_rule => ['.* - [F]']
       }
-    ]
+    ],
+    options => [ '-Indexes' ]
   }
 
   $real_context_path_geoserver = pick($context_path_geoserver, $fstep::globals::context_path_geoserver)
