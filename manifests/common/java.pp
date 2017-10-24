@@ -1,6 +1,6 @@
 class fstep::common::java {
   class { ::java:
-    package => 'java-1.8.0-openjdk-headless',
+    package => 'java-1.8.0-openjdk-devel',
   }
 
   $ld_java_conf_epp = @(END)
