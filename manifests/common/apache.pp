@@ -2,6 +2,7 @@ class fstep::common::apache {
 
   class { ::apache:
     default_vhost => false,
+    options => [ '-Indexes' ]
   }
 
   ::apache::namevirtualhost { '*:80': }
