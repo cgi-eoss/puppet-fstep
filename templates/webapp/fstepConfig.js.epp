@@ -4,6 +4,8 @@
     String $api_v2_url,
     String $sso_url,
     String $mapbox_token,
+    String $fstep_portal_url,
+    String $analyst_url
 | -%>
 // Managed by Puppet
 define('fstepConfig', [], function () {
@@ -12,6 +14,8 @@ define('fstepConfig', [], function () {
     apiUrl: "<%= $api_url %>",
     apiUrlv2: "<%= $api_v2_url %>",
     ssoUrl: "<%= $sso_url %>",
-    mapboxToken: "<%= $mapbox_token %>"
+    mapboxToken: "<%= $mapbox_token %>",
+    fstepPortalUrl: "<%= $fstep_portal_url %>",
+    analystUrl: "<%= $analyst_url %>"
   }
 });

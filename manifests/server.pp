@@ -62,6 +62,10 @@ class fstep::server (
   $resto_output_products_model        = 'RestoModel_Fstep_Output',
   $resto_username                     = undef,
   $resto_password                     = undef,
+  
+  $broker_url                         = undef,
+  $broker_username                    = undef,
+  $broker_password                    = undef,
 
   $custom_config_properties           = { },
 ) {
@@ -106,7 +110,11 @@ class fstep::server (
   $real_resto_url = pick($resto_url, "${fstep::globals::base_url}${fstep::globals::context_path_resto}/")
   $real_resto_username = pick($resto_username, $fstep::globals::resto_fstep_username)
   $real_resto_password = pick($resto_username, $fstep::globals::resto_fstep_password)
-
+  
+  $real_broker_url= pick($broker_url, "${fstep::globals::base_url}${fstep::globals::context_path_broker}/")
+  $real_broker_username = pick($broker_username, $fstep::globals::broker_fstep_username)
+  $real_broker_password = pick($broker_password, $fstep::globals::broker_fstep_password)
+  
   $real_graylog_api_url = pick($graylog_api_url, "${fstep::globals::base_url}${fstep::globals::graylog_api_path}")
   $real_graylog_api_username = pick($graylog_api_username, $fstep::globals::graylog_api_fstep_username)
   $real_graylog_api_password = pick($graylog_api_username, $fstep::globals::graylog_api_fstep_password)
@@ -186,6 +194,9 @@ class fstep::server (
       'resto_output_products_model'        => $resto_output_products_model,
       'resto_username'                     => $real_resto_username,
       'resto_password'                     => $real_resto_password,
+      'broker_url'                         => $real_broker_url,
+      'broker_username'                    => $real_broker_username,
+      'broker_password'                    => $real_broker_password,
       'custom_properties'                  => $custom_config_properties,
     }),
     require => Package['fs-tep-server'],

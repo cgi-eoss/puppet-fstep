@@ -17,6 +17,7 @@ class fstep::db::postgresql (
 
   # EPEL is required for the postgis extensions
   require ::epel
+  Yumrepo['epel'] -> Package<|tag == 'postgresql'|>
 
   if $fstep::db::trust_local_network {
     $acls = [

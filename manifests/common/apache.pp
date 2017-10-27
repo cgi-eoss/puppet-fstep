@@ -11,6 +11,10 @@ class fstep::common::apache {
       ensure => true,
     }
 
+     ::selinux::boolean { 'httpd_can_network_connect':
+      ensure => true,
+    }
+
     ::selinux::port { 'php-fpm':
       seltype  => 'http_port_t',
       port     => 9000,

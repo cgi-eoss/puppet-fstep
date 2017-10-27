@@ -17,9 +17,9 @@ class fstep::proxy::shibboleth (
   $session_timeout                  = 3600,
   $session_check_address            = false,
   $session_consistent_address       = false,
-  $support_contact                  = 'eo-gpod@esa.int',
+  $support_contact                  = 'fs-tep_support@esa.int',
   $idp_id                           = 'https://eo-sso-idp.eo.esa.int/shibboleth',
-  $idp_scope                        = 'evo-pdgs.com',
+  $idp_scope                        = 'esa.int',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
       'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
@@ -38,9 +38,9 @@ class fstep::proxy::shibboleth (
   $idp_cert,
   $idp_artifact_resolution_services = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding',
-      'location' => 'https://eo-sso-idp.evo-pdgs.com:8110/idp/profile/SAML1/SOAP/ArtifactResolution' },
+      'location' => 'https://eo-sso-idp.eo.esa.int:8110/idp/profile/SAML1/SOAP/ArtifactResolution' },
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-      'location' => 'https://eo-sso-idp.evo-pdgs.com:8110/idp/profile/SAML2/SOAP/ArtifactResolution' },
+      'location' => 'https://eo-sso-idp.eo.esa.int:8110/idp/profile/SAML2/SOAP/ArtifactResolution' },
   ],
   $idp_slo_service                  = {
     'binding'           => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
@@ -59,9 +59,9 @@ class fstep::proxy::shibboleth (
   ],
   $idp_attribute_services           = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding',
-      'location' => 'https://eo-sso-idp.evo-pdgs.com:8110/idp/profile/SAML1/SOAP/AttributeQuery' },
+      'location' => 'https://eo-sso-idp.eo.esa.int:8110/idp/profile/SAML1/SOAP/AttributeQuery' },
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:SOAP',
-      'location' => 'https://eo-sso-idp.evo-pdgs.com:8110/idp/profile/SAML2/SOAP/AttributeQuery' },
+      'location' => 'https://eo-sso-idp.eo.esa.int:8110/idp/profile/SAML2/SOAP/AttributeQuery' },
   ],
   $idp_keyname                      = "defcreds",
 ) {

@@ -14,6 +14,9 @@ class fstep::proxy (
   $context_path_logs      = undef,
   $context_path_eureka    = undef,
   $context_path_gui       = undef,
+  $context_path_analyst   = undef,
+  $context_path_broker    = undef,
+  
 
   $tls_cert_path          = '/etc/pki/tls/certs/fstep_portal.crt',
   $tls_chain_path         = '/etc/pki/tls/certs/fstep_portal.chain.crt',
@@ -21,6 +24,11 @@ class fstep::proxy (
   $tls_cert               = undef,
   $tls_chain              = undef,
   $tls_key                = undef,
+
+  $sp_cert_path           = '/etc/shibboleth/sp-cert.pem',
+  $sp_key_path            = '/etc/shibboleth/sp-key.pem',
+  $sp_cert                = undef,
+  $sp_key                 = undef,
 ) {
 
   require ::fstep::globals
@@ -44,7 +52,8 @@ class fstep::proxy (
         rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
         rewrite_rule => ['.* - [F]']
       }
-    ]
+    ],
+    options => [ '-Indexes' ]
   }
 
   $real_context_path_geoserver = pick($context_path_geoserver, $fstep::globals::context_path_geoserver)
@@ -55,6 +64,8 @@ class fstep::proxy (
   $real_context_path_monitor = pick($context_path_monitor, $fstep::globals::context_path_monitor)
   $real_context_path_logs = pick($context_path_logs, $fstep::globals::context_path_logs)
   $real_context_path_eureka = pick($context_path_eureka, $fstep::globals::context_path_eureka)
+  $real_context_path_analyst = pick($context_path_analyst, $fstep::globals::context_path_analyst)
+  $real_context_path_broker = pick($context_path_broker, $fstep::globals::context_path_broker)
 
   # Directory/Location directives - cannot be an empty array...
   $default_directories = [
@@ -108,8 +119,17 @@ class fstep::proxy (
     },
     {
       'path'   => $real_context_path_eureka,
-      'url'    =>
-      "http://${fstep::globals::server_hostname}:${fstep::globals::serviceregistry_application_port}/eureka",
+      'url'    => "http://${fstep::globals::server_hostname}:${fstep::globals::serviceregistry_application_port}/eureka",
+      'params' => { 'retry' => '0' }
+    },
+    {
+      'path'   => $real_context_path_analyst,
+      'url'    => "http://${fstep::globals::ui_hostname}/analyst",
+      'params' => { 'retry' => '0' }
+    },
+    {
+      'path'   => $real_context_path_broker,
+      'url'    => "http://${fstep::globals::broker_hostname}",
       'params' => { 'retry' => '0' }
     }
   ]
@@ -128,6 +148,23 @@ class fstep::proxy (
     }
     contain ::fstep::proxy::shibboleth
 
+    # add the SSO certificate (which may be different than the portal one)
+    file { $sp_cert_path:
+      ensure  => present,
+      mode    => '0644',
+      owner   => 'shibd',
+      group   => 'shibd',
+      content => $sp_cert,   
+    }
+
+    file { $sp_key_path:
+      ensure  => present,
+      mode    => '0400',
+      owner   => 'shibd',
+      group   => 'shibd',
+      content => $sp_key,   
+    }
+
     # Add the /Shibboleth.sso SP callback location, enable the minimal support for the root, and add secured paths
     $directories = concat([
       {
@@ -140,7 +177,7 @@ class fstep::proxy (
         'path'                  => '/',
         'auth_type'             => 'shibboleth',
         'shib_use_headers'      => 'On',
-        'shib_request_settings' => { 'requireSession' => '0' },
+        'shib_request_settings' => { 'requireSession' => '1' },
         'custom_fragment'       => $::operatingsystemmajrelease ? {
           '6'     => 'ShibCompatWith24 On',
           default => ''

@@ -19,6 +19,10 @@ class fstep::worker (
   $serviceregistry_port     = undef,
   $serviceregistry_url      = undef,
 
+  $broker_url               = undef,
+  $broker_username          = undef,
+  $broker_password          = undef,
+
   $worker_environment       = 'LOCAL',
 
   $cache_concurrency        = 4,
@@ -53,6 +57,11 @@ class fstep::worker (
   $serviceregistry_server = "${real_serviceregistry_host}:${real_serviceregistry_port}"
   $real_serviceregistry_url = pick($serviceregistry_url,
     "http://${serviceregistry_creds}@${serviceregistry_server}/eureka/")
+    
+  $real_broker_url= pick($broker_url, "${fstep::globals::base_url}${fstep::globals::context_path_broker}/")
+  $real_broker_username = pick($broker_username, $fstep::globals::broker_fstep_username)
+  $real_broker_password = pick($broker_password, $fstep::globals::broker_fstep_password)
+     
 
   ensure_packages(['fs-tep-worker'], {
     ensure => 'latest',
@@ -101,6 +110,9 @@ class fstep::worker (
       'cache_concurrency'     => $cache_concurrency,
       'cache_maxweight'       => $cache_maxweight,
       'jobs_basedir'          => "${fstep::common::datadir::data_basedir}/${jobs_dir}",
+      'broker_url'            => $real_broker_url,
+      'broker_username'       => $real_broker_username,
+      'broker_password'       => $real_broker_password,
       'ipt_auth_endpoint'     => $ipt_auth_endpoint,
       'ipt_auth_domain'       => $ipt_auth_domain,
       'ipt_download_base_url' => $ipt_download_base_url,

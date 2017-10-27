@@ -4,6 +4,7 @@ class fstep::globals (
 
   # Base URL for fstep::proxy
   $base_url                         = "http://${facts['fqdn']}",
+  $drupal_url                       = 'https://foodsecurity-tep.eo.esa.int',
 
   # Context paths for reverse proxy
   $context_path_geoserver           = '/geoserver',
@@ -14,7 +15,9 @@ class fstep::globals (
   $context_path_monitor             = '/monitor',
   $context_path_logs                = '/logs',
   $context_path_eureka              = '/eureka',
-
+  $context_path_analyst             = '/analyst',
+  $context_path_broker             = '/broker',
+  
   # System user
   $user                             = 'fstep',
   $group                            = 'fstep',
@@ -29,7 +32,9 @@ class fstep::globals (
   $server_hostname                  = 'fstep-server',
   $monitor_hostname                 = 'fstep-monitor',
   $resto_hostname                   = 'fstep-resto',
+  $broker_hostname                  = 'fstep-broker',
   $default_gui_hostname             = 'fstep-worker',
+  $ui_hostname                      = 'fstep-ui',
   $kubernetes_master_hostname       = 'fskubermaster',
 
   $hosts_override                   = { },
@@ -74,6 +79,10 @@ class fstep::globals (
   # Resto config
   $resto_fstep_username              = 'fstepresto',
   $resto_fstep_password              = 'fsteprestopass',
+
+  # Broker config
+  $broker_fstep_username              = 'fstepbroker',
+  $broker_fstep_password              = 'fstepbrokerpass',
 
   # monitor config
   $grafana_port                     = 8089,
