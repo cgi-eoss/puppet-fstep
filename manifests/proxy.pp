@@ -172,18 +172,54 @@ class fstep::proxy (
         'path'       => '/Shibboleth.sso',
         'sethandler' => 'shib'
       },
-#      {
-#        'provider'              => 'location',
-#        'path'                  => '/',
-#        'auth_type'             => 'shibboleth',
-#        'shib_use_headers'      => 'On',
-#        'shib_request_settings' => { 'requireSession' => '1' },
-#        'custom_fragment'       => $::operatingsystemmajrelease ? {
-#          '6'     => 'ShibCompatWith24 On',
-#          default => ''
-#       },
-#        'auth_require'          => 'shibboleth',
-#      },
+      {
+        'provider'              => 'location',
+        'path'                  => $real_context_path_monitor,
+        'auth_type'             => 'shibboleth',
+        'shib_use_headers'      => 'On',
+        'shib_request_settings' => { 'requireSession' => '1' },
+        'custom_fragment'       => $::operatingsystemmajrelease ? {
+          '6'     => 'ShibCompatWith24 On',
+          default => ''
+       },
+        'auth_require'          => 'shibboleth',
+      },
+      {
+        'provider'              => 'location',
+        'path'                  => $real_context_path_resto,
+        'auth_type'             => 'shibboleth',
+        'shib_use_headers'      => 'On',
+        'shib_request_settings' => { 'requireSession' => '1' },
+        'custom_fragment'       => $::operatingsystemmajrelease ? {
+          '6'     => 'ShibCompatWith24 On',
+          default => ''
+       },
+        'auth_require'          => 'shibboleth',
+      },
+      {
+        'provider'              => 'location',
+        'path'                  => $real_context_path_geoserver,
+        'auth_type'             => 'shibboleth',
+        'shib_use_headers'      => 'On',
+        'shib_request_settings' => { 'requireSession' => '1' },
+        'custom_fragment'       => $::operatingsystemmajrelease ? {
+          '6'     => 'ShibCompatWith24 On',
+          default => ''
+       },
+        'auth_require'          => 'shibboleth',
+      },
+      {
+        'provider'              => 'location',
+        'path'                  => $real_context_path_analyst,
+        'auth_type'             => 'shibboleth',
+        'shib_use_headers'      => 'On',
+        'shib_request_settings' => { 'requireSession' => '1' },
+        'custom_fragment'       => $::operatingsystemmajrelease ? {
+          '6'     => 'ShibCompatWith24 On',
+          default => ''
+       },
+        'auth_require'          => 'shibboleth',
+      },
       {
         'provider'              => 'location',
         'path'                  => $real_context_path_webapp,
