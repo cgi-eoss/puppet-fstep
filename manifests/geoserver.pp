@@ -21,11 +21,13 @@ class fstep::geoserver (
   $wmts_plugin            = 'geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin',
   $csw_plugin             = 'geoserver-2.12.1-csw-plugin',
   $wcs_eo_plugin          = 'geoserver-2.12.1-wcs2_0-eo-plugin',
+  $wps_plugin             = 'geoserver-2.12.1-wps-plugin',
 
   $ncwms_download_url     = 'http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-ncwms-plugin.zip',
   $wmts_download_url      = 'http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin.zip',
   $csw_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-csw-plugin.zip',
-  $wcs_eo_download_url    = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wcs2_0-eo-plugin.zip'
+  $wcs_eo_download_url    = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wcs2_0-eo-plugin.zip',
+  $wps_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wps-plugin.zip'
 ) {
 
   require ::fstep::globals
@@ -120,7 +122,7 @@ END
   # wmts plugin - http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin.zip
   # csw plugin - http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-csw-plugin.zip
   # WCS 2.0 EO plugin http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wcs2_0-eo-plugin.zip
-
+  # wps plugin - http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wps-plugin.zip
   $plugins_dir = "${geoserver_path}/webapps/geoserver/WEB-INF/lib"
   archive { $ncwms_plugin:
     path          => "${user_home}/${ncwms_plugin}.zip",
@@ -152,6 +154,15 @@ END
   archive { $wcs_eo_plugin:
     path          => "${user_home}/${wcs_eo_plugin}.zip",
     source        => $wcs_eo_download_url,
+    user          => $user,
+    extract       => true,
+    extract_path  => $plugins_dir,
+    require       => [User[$user], Package['unzip']],
+  }
+  
+  archive { $wps_plugin:
+    path          => "${user_home}/${wps_plugin}.zip",
+    source        => $wps_download_url,
     user          => $user,
     extract       => true,
     extract_path  => $plugins_dir,
