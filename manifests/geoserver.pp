@@ -9,23 +9,23 @@ class fstep::geoserver (
   $init_script            = '/etc/init.d/geoserver',
   $systemd_unit           = '/usr/lib/systemd/system/geoserver.service',
 
-  $geoserver_version      = '2.11.2',
-  $geoserver_download_url = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/geoserver-2.11.2-bin.zip',
+  $geoserver_version      = '2.12.1',
+  $geoserver_download_url = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/geoserver-2.12.1-bin.zip',
   $geoserver_extension    = 'zip',
-  $geoserver_digest       = '164b824a83c3e5f7e1806d9c1ef82afdede70533',
+  $geoserver_digest       = '704c1eb7b9e2a904f76954acfd1c756568094694',
   $geoserver_digest_type  = 'sha1',
   $geoserver_port         = undef,
   $geoserver_stopport     = undef,
 
-  $ncwms_plugin           = 'geoserver-2.11-SNAPSHOT-ncwms-plugin',
-  $wmts_plugin            = 'geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin',
-  $csw_plugin             = 'geoserver-2.11.2-csw-plugin',
-  $wcs_eo_plugin          = 'geoserver-2.11.2-wcs2_0-eo-plugin',
+  $ncwms_plugin           = 'geoserver-2.12-SNAPSHOT-ncwms-plugin',
+  $wmts_plugin            = 'geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin',
+  $csw_plugin             = 'geoserver-2.12.1-csw-plugin',
+  $wcs_eo_plugin          = 'geoserver-2.12.1-wcs2_0-eo-plugin',
 
-  $ncwms_download_url     = 'http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-ncwms-plugin.zip',
-  $wmts_download_url      = 'http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin.zip',
-  $csw_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-csw-plugin.zip',
-  $wcs_eo_download_url    = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-wcs2_0-eo-plugin.zip'
+  $ncwms_download_url     = 'http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-ncwms-plugin.zip',
+  $wmts_download_url      = 'http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin.zip',
+  $csw_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-csw-plugin.zip',
+  $wcs_eo_download_url    = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wcs2_0-eo-plugin.zip'
 ) {
 
   require ::fstep::globals
@@ -49,7 +49,7 @@ class fstep::geoserver (
   ensure_packages(['unzip'])
 
   # This is created by the ::archive resource
-  $geoserver_path = "${user_home}/geoserver-2.11.2"
+  $geoserver_path = "${user_home}/geoserver-2.12.1"
 
   # Download and unpack the standalone platform-independent binary distribution
   $archive = "geoserver-${geoserver_version}"
@@ -116,10 +116,10 @@ END
     require => [User[$user], Archive[$archive], File[$init_script]],
   }
 
-  # ncWMS plugin - http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-ncwms-plugin.zip
-  # wmts plugin - http://ares.boundlessgeo.com/geoserver/2.11.x/community-latest/geoserver-2.11-SNAPSHOT-wmts-multi-dimensional-plugin.zip
-  # csw plugin - http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-csw-plugin.zip
-  # WCS 2.0 EO plugin http://sourceforge.net/projects/geoserver/files/GeoServer/2.11.2/extensions/geoserver-2.11.2-wcs2_0-eo-plugin.zip
+  # ncWMS plugin - http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-ncwms-plugin.zip
+  # wmts plugin - http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin.zip
+  # csw plugin - http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-csw-plugin.zip
+  # WCS 2.0 EO plugin http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wcs2_0-eo-plugin.zip
 
   $plugins_dir = "${geoserver_path}/webapps/geoserver/WEB-INF/lib"
   archive { $ncwms_plugin:
