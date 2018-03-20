@@ -20,6 +20,7 @@ class fstep::proxy::shibboleth (
   $support_contact                  = 'fs-tep_support@esa.int',
   $idp_id                           = 'https://eo-sso-idp.eo.esa.int/shibboleth',
   $idp_scope                        = 'esa.int',
+  $shib_xml_custom_tags             = '',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
       'location' => 'https://foodsecurity-tep.eo.esa.int/Shibboleth.sso/SAML2/Artifact' },
@@ -136,7 +137,8 @@ class fstep::proxy::shibboleth (
       'metadata_subdir'            => $metadata_subdir,
       'sp_key'                     => "${config_dir}/sp-key.key",
       'sp_cert'                    => "${config_dir}/sp-cert.crt",
-      'idp_keyname'                => $idp_keyname
+      'idp_keyname'                => $idp_keyname,
+      'shib_xml_custom_tags'       => $shib_xml_custom_tags	   
     }),
     require => Package['shibboleth'],
     notify  => Service['shibd'],
