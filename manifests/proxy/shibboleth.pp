@@ -20,6 +20,7 @@ class fstep::proxy::shibboleth (
   $support_contact                  = 'info@eoss-cloud.it',
   $idp_id                           = 'https://eo-sso-idp.evo-pdgs.com:443/shibboleth',
   $idp_scope                        = 'evo-pdgs.com',
+  $shib_xml_custom_tags             = '',
   $sp_assertion_consumer_services   = [
     { 'binding'  => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact',
       'location' => 'https://fsdev.eoss-cloud.it/Shibboleth.sso/SAML2/Artifact' },
@@ -116,7 +117,8 @@ class fstep::proxy::shibboleth (
       'metadata_subdir'            => $metadata_subdir,
       'sp_key'                     => "${config_dir}/sp-key.pem",
       'sp_cert'                    => "${config_dir}/sp-cert.pem",
-      'idp_keyname'                => $idp_keyname
+      'idp_keyname'                => $idp_keyname,
+      'shib_xml_custom_tags'   => $shib_xml_custom_tags	   
     }),
     require => Package['shibboleth'],
     notify  => Service['shibd'],
