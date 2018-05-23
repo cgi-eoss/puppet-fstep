@@ -1,6 +1,6 @@
 class fstep::drupal (
   $drupal_site      = 'foodsecurity-tep.eo.esa.int',
-  $drupal_version   = '7.56',
+  $drupal_version   = '7.59',
   $www_path         = '/var/www/html/drupal',
   $www_user         = 'apache',
 
