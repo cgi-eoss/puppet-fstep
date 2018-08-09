@@ -13,6 +13,11 @@ class fstep::db::postgresql (
   $db_zoo_name          = $fstep::globals::fstep_db_zoo_name,
   $db_zoo_username      = $fstep::globals::fstep_db_zoo_username,
   $db_zoo_password      = $fstep::globals::fstep_db_zoo_password,
+  
+  $db_v2_api_keys_table          = $fstep::globals::fstep_db_v2_api_keys_table,
+  $db_v2_api_users_table          = $fstep::globals::fstep_db_v2_api_users_table,
+  $db_v2_api_keys_reader_username      = $fstep::globals::fstep_db_v2_api_keys_reader_username,
+  $db_v2_api_keys_reader_password      = $fstep::globals::fstep_db_v2_api_keys_reader_password,
 ) {
 
   # EPEL is required for the postgis extensions
@@ -39,6 +44,7 @@ class fstep::db::postgresql (
       "host ${db_resto_name} ${db_resto_su_username} ${fstep::globals::resto_hostname} md5",
       # Access to zoo db only required for fs-tep-wps
       "host ${db_zoo_name} ${db_zoo_username} ${fstep::globals::wps_hostname} md5",
+      "host ${db_v2_name} ${db_v2_api_keys_reader_username} ${fstep::globals::drupal_hostname} md5"
     ]
   }
 
@@ -86,5 +92,33 @@ class fstep::db::postgresql (
     password => postgresql_password($db_zoo_username, $db_zoo_password),
     grant    => 'ALL',
   }
+
+  ::postgresql::server::role { 'fstepdb_apikeys':
+    username      => $db_v2_api_keys_reader_username,
+    password_hash => postgresql_password($db_v2_api_keys_reader_username, $db_v2_api_keys_reader_password),
+    require       => Postgresql::Server::Db['fstepdb_v2']
+  }
+
+  ::postgresql::server::table_grant { 'API Key read permission':
+    db  => $db_v2_name,
+    table     => $db_v2_api_keys_table,
+    privilege    => 'SELECT',
+    role => "${db_v2_api_keys_reader_username}",
+    require =>  Postgresql::Server::Role['fstepdb_apikeys']
+  }
+
+  ::postgresql::server::table_grant { 'Users read permission':
+    db  => $db_v2_name,
+    table     => $db_v2_api_users_table,
+    privilege    => 'SELECT',
+    role => "${db_v2_api_keys_reader_username}",
+    require =>  Postgresql::Server::Role['fstepdb_apikeys']
+  }
+  
+  ::postgresql::server::grant{ 'API DB Connect':
+  privilege => 'CONNECT',
+  db        => $db_v2_name,
+  role      => $db_v2_api_keys_reader_username,
+}
 
 }

@@ -100,6 +100,16 @@ class fstep::globals (
   $graylog_api_fstep_password        = 'fstepgraylogpass',
 
   $enable_log4j2_graylog            = false,
+  
+  # API Proxy config
+  $fstep_db_v2_api_keys_table= 'keytable',
+  $fstep_db_v2_api_user_table= 'usertable',
+  $fstep_db_v2_api_keys_reader_username= 'username',
+  $fstep_db_v2_api_keys_reader_password= 'password',
+  $proxy_dbd_db= 'fstepdb',
+  $proxy_dbd_port= 10000,
+  $proxy_dbd_dbdriver= 'dbdriver',
+  $proxy_dbd_query= 'dbquery', 
 ) {
 
   # Alias reverse-proxy hosts via hosts file

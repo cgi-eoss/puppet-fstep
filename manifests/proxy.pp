@@ -35,6 +35,7 @@ class fstep::proxy (
 
   contain ::fstep::common::apache
 
+  ensure_packages(['apr-util-pgsql'])
   include ::apache::mod::headers
   include ::apache::mod::proxy
   include ::apache::mod::rewrite
@@ -154,7 +155,7 @@ class fstep::proxy (
       mode    => '0644',
       owner   => 'shibd',
       group   => 'shibd',
-      content => $sp_cert,   
+      content => $sp_cert,
     }
 
     file { $sp_key_path:
@@ -162,7 +163,7 @@ class fstep::proxy (
       mode    => '0400',
       owner   => 'shibd',
       group   => 'shibd',
-      content => $sp_key,   
+      content => $sp_key,
     }
 
     # Add the /Shibboleth.sso SP callback location, enable the minimal support for the root, and add secured paths
@@ -199,14 +200,25 @@ class fstep::proxy (
       {
         'provider'              => 'location',
         'path'                  => '/secure',
-        'auth_type'             => 'shibboleth',
-        'shib_use_headers'      => 'On',
-        'shib_request_settings' => { 'requireSession' => '1' },
-        'custom_fragment'       => $::operatingsystemmajrelease ? {
-          '6'     => 'ShibCompatWith24 On',
-          default => ''
-        },
-        'auth_require'          => 'valid-user',
+        'custom_fragment'       =>
+        "<If \"-n req('Authorization')\">
+    AuthType Basic
+    AuthName 'FS-TEP API access'
+    AuthBasicProvider dbd
+    AuthDBDUserPWQuery \"${fstep::globals::proxy_dbd_query}\"
+    Require valid-user
+    RewriteEngine On
+    RewriteCond %{REMOTE_USER} ^(.*)$
+    RewriteRule ^(.*)$ - [E=R_U:%1]
+    RequestHeader set Eosso-Person-commonName %{R_U}e
+</If>
+<Else>
+    Require valid-user
+    AuthType shibboleth
+    ShibRequestSetting requireSession 1
+    ShibUseHeaders On
+</Else>
+"
       }
     ], $default_directories)
 
@@ -273,6 +285,7 @@ class fstep::proxy (
       ssl_chain        => $real_tls_chain_path,
       ssl_key          => $tls_key_path,
       default_vhost    => true,
+      shib_compat_valid_user => 'On',
       request_headers  => [
         'set X-Forwarded-Proto "https"'
       ],
@@ -291,5 +304,12 @@ class fstep::proxy (
       *                => $default_proxy_config
     }
   }
+
+
+  class { 'apache::mod::authn_dbd':
+    authn_dbd_params => "host=${fstep::globals::proxy_dbd_db} port=${fstep::globals::proxy_dbd_port} user=${fstep::globals::fstep_db_v2_api_keys_reader_username} password=${fstep::globals::fstep_db_v2_api_keys_reader_password} dbname=${fstep::globals::fstep_db_v2_name}",
+    authn_dbd_dbdriver => "${fstep::globals::proxy_dbd_dbdriver}"
+  }
+
 
 }
