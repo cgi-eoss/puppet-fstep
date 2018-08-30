@@ -174,11 +174,15 @@ class fstep::proxy (
         'sethandler' => 'shib'
       },
       {
+        'provider'   => 'location',
+        'path'       => '/config'
+      },
+      {
         'provider'              => 'location',
         'path'                  => '/',
         'auth_type'             => 'shibboleth',
         'shib_use_headers'      => 'On',
-        'shib_request_settings' => { 'requireSession' => '1' },
+        'shib_request_settings' => { 'requireSession' => '0' },
         'custom_fragment'       => $::operatingsystemmajrelease ? {
           '6'     => 'ShibCompatWith24 On',
           default => ''
