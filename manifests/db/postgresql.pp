@@ -119,6 +119,7 @@ class fstep::db::postgresql (
   privilege => 'CONNECT',
   db        => $db_v2_name,
   role      => $db_v2_api_keys_reader_username,
+  require =>  Postgresql::Server::Role['fstepdb_apikeys']
 }
 
 }
