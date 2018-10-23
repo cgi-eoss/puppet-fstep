@@ -5,7 +5,8 @@ class fstep::worker (
   $config_file              = '/var/fs-tep/worker/fs-tep-worker.conf',
   $logging_config_file      = '/var/fs-tep/worker/log4j2.xml',
   $properties_file          = '/var/fs-tep/worker/application.properties',
-
+  $traefik_config_path      = '/var/fs-tep/traefik/',
+  $traefik_config_file      = '/var/fs-tep/traefik/traefik.toml',
   $service_enable           = true,
   $service_ensure           = 'running',
 
@@ -34,7 +35,9 @@ class fstep::worker (
   # These are not undef so they're not mandatory parameters, but must be set correctly if IPT downloads are required
   $ipt_auth_domain          = '__secret__',
   $ipt_download_base_url    = '__secret__',
-
+  $traefik_admin_user       = 'admin:$apr1$5Rq.EMbw$2SXBjolJO1jw8WPNrsxSG1',
+  $traefik_admin_port       = '8000',
+  $traefik_service_port     = '10000',
   $custom_config_properties = { },
 ) {
 
@@ -57,11 +60,11 @@ class fstep::worker (
   $serviceregistry_server = "${real_serviceregistry_host}:${real_serviceregistry_port}"
   $real_serviceregistry_url = pick($serviceregistry_url,
     "http://${serviceregistry_creds}@${serviceregistry_server}/eureka/")
-    
+
   $real_broker_url= pick($broker_url, "${fstep::globals::base_url}${fstep::globals::context_path_broker}/")
   $real_broker_username = pick($broker_username, $fstep::globals::broker_fstep_username)
   $real_broker_password = pick($broker_password, $fstep::globals::broker_fstep_password)
-     
+
 
   ensure_packages(['fs-tep-worker'], {
     ensure => 'latest',
@@ -130,4 +133,30 @@ class fstep::worker (
     require    => [Package['fs-tep-worker'], File[$properties_file]],
   }
 
+  file { $traefik_config_path:
+    ensure => 'directory',
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
+  }
+
+  file { $traefik_config_file:
+    ensure  => 'present',
+    owner   => $fstep::globals::user,
+    group   => $fstep::globals::group,
+    content => epp('fstep/traefik/traefik.toml.epp', {
+      'traefik_admin_user'   => $traefik_admin_user,
+      'traefik_admin_port'   => $traefik_admin_port,
+      'traefik_service_port' => $traefik_service_port
+    }),
+    require    => [File[$traefik_config_path]],
+    notify  => Service['docker-traefik']
+  }
+
+  docker::run { 'traefik':
+    image   => 'traefik:1.7.0',
+    net     => 'host',
+    extra_parameters => [ '--restart=always'],
+    volumes          => ["$traefik_config_file:/etc/traefik/traefik.toml"],
+    require    => [File[$traefik_config_file]]
+  }
 }
