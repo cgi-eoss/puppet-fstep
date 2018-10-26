@@ -8,6 +8,7 @@ class fstep::globals (
 
   # Context paths for reverse proxy
   $context_path_geoserver           = '/geoserver',
+  $context_path_geoserver_contrib   = '/geoserver-contrib',
   $context_path_resto               = '/resto',
   $context_path_webapp              = '/app',
   $context_path_wps                 = '/secure/wps',
@@ -47,6 +48,8 @@ class fstep::globals (
   $default_gui_ip                   = '192.168.0.11',
   $ui_hostname                      = 'fstep-ui',
   $ui_ip                            = '192.168.0.12',
+  $geoserver_contrib_hostname       = 'fstep-geoserver-contrib',
+  $geoserver_contrib_ip             = '192.168.0.13',
   $kubernetes_master_hostname       = 'fskubermaster',
 
   $hosts_override                   = { },
@@ -88,6 +91,8 @@ class fstep::globals (
   $geoserver_fstep_username          = 'fstepgeoserver',
   $geoserver_fstep_password          = 'fstepgeoserverpass',
 
+  $geoserver_contrib_port           = 9080,
+    
   # Resto config
   $resto_fstep_username              = 'fstepresto',
   $resto_fstep_password              = 'fsteprestopass',

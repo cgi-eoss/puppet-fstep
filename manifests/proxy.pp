@@ -6,6 +6,7 @@ class fstep::proxy (
   $enable_sso             = false,
 
   $context_path_geoserver = undef,
+  $context_path_geoserver_contrib = undef,
   $context_path_resto     = undef,
   $context_path_webapp    = undef,
   $context_path_wps       = undef,
@@ -38,6 +39,7 @@ class fstep::proxy (
   ensure_packages(['apr-util-pgsql'])
   include ::apache::mod::headers
   include ::apache::mod::proxy
+  include ::apache::mod::proxy_wstunnel
   include ::apache::mod::rewrite
 
   $default_proxy_config = {
@@ -49,6 +51,10 @@ class fstep::proxy (
         rewrite_rule => ['^/app$ /app/ [R]']
       },
       {
+        rewrite_cond => ['%{HTTP:UPGRADE} ^WebSocket$ [NC]', '%{HTTP:CONNECTION} ^Upgrade$ [NC]'],
+        rewrite_rule => ["^/gui/(.*)  ws://${fstep::globals::default_gui_hostname}/gui/\$1 [P]"]
+      },
+      {
         # default rewrite requested by ESA scan
         rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
         rewrite_rule => ['.* - [F]']
@@ -58,6 +64,7 @@ class fstep::proxy (
   }
 
   $real_context_path_geoserver = pick($context_path_geoserver, $fstep::globals::context_path_geoserver)
+  $real_context_path_geoserver_contrib = pick($context_path_geoserver_contrib, $fstep::globals::context_path_geoserver_contrib)
   $real_context_path_resto = pick($context_path_resto, $fstep::globals::context_path_resto)
   $real_context_path_webapp = pick($context_path_webapp, $fstep::globals::context_path_webapp)
   $real_context_path_wps = pick($context_path_wps, $fstep::globals::context_path_wps)
@@ -85,6 +92,16 @@ class fstep::proxy (
       'url'    =>
       "http://${fstep::globals::geoserver_hostname}:${fstep::globals::geoserver_port}${real_context_path_geoserver}",
       'params' => { 'retry' => '0' }
+    },
+    {
+      'path'   => $real_context_path_geoserver_contrib,
+      'url'    =>
+      "http://${fstep::globals::geoserver_contrib_hostname}:${fstep::globals::geoserver_contrib_port}${real_context_path_geoserver_contrib}",
+      'params' => { 'retry' => '0' }
+    },
+    {
+      'path'   => "/config",
+      'url'    => "!"
     },
     {
       'path'   => $real_context_path_resto,
@@ -138,7 +155,7 @@ class fstep::proxy (
   $default_proxy_pass_match = [
     {
       'path'   => '^/gui/(.*)$',
-      'url'    => "http://${fstep::globals::default_gui_hostname}\$1",
+      'url'    => "http://${fstep::globals::default_gui_hostname}",
       'params' => { 'retry' => '0' }
     }
   ]
@@ -211,7 +228,14 @@ class fstep::proxy (
           '6'     => 'ShibCompatWith24 On',
           default => ''
        },
-        'auth_require'          => 'shibboleth',
+       
+        'require' => {
+        'enforce'  => 'any',
+        'requires' => [
+          'shibboleth',
+          'env AllowIP'
+        ]
+        }
       },
       {
         'provider'              => 'location',
