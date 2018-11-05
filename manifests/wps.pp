@@ -17,7 +17,7 @@ class fstep::wps (
   # zoo-kernel config
   $wps_version                = '1.0.0',
   $lang                       = 'en-US',
-  $server_address             = 'https://foodsecurity-tep.eo.esa.int/wps',
+  $server_address             = 'https://foodsecurity-tep.net/wps',
   $data_basedir               = '/data',
   $data_path                  = 'wps',
   $tmp_path                   = 'wps_tmp',
@@ -25,7 +25,7 @@ class fstep::wps (
   $cache_dir                  = '/tmp',
 
   $provider_name              = 'CGI IT UK Ltd.',
-  $provider_site              = 'https://foodsecurity-tep.eo.esa.int/',
+  $provider_site              = 'https://foodsecurity-tep.net/',
 
   $db_host                    = undef,
   $db_name                    = undef,

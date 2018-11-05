@@ -4,7 +4,7 @@ class fstep::globals (
 
   # Base URL for fstep::proxy
   $base_url                         = "http://${facts['fqdn']}",
-  $drupal_url                       = 'https://foodsecurity-tep.eo.esa.int',
+  $drupal_url                       = 'https://foodsecurity-tep.net',
 
   # Context paths for reverse proxy
   $context_path_geoserver           = '/geoserver',

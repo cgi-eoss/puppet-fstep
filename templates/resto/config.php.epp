@@ -62,7 +62,7 @@ return array(
                 'Description' => 'Search on all collections',
                 'Tags' => 'resto fstep fs-tep',
                 'Developer' => 'resto team, FS-TEP team',
-                'Contact' => 'info@foodsecurity-tep.eo.esa.int',
+                'Contact' => 'info@foodsecurity-tep.net',
                 'Query' => 'europe 2015',
                 'Attribution' => 'resto framework. Copyright 2015, All Rights Reserved'
             )
