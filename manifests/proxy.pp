@@ -26,8 +26,8 @@ class fstep::proxy (
   $tls_chain              = undef,
   $tls_key                = undef,
 
-  $sp_cert_path           = '/etc/shibboleth/sp-cert.pem',
-  $sp_key_path            = '/etc/shibboleth/sp-key.pem',
+  $sp_cert_path           = '/etc/shibboleth/sp-cert.cert',
+  $sp_key_path            = '/etc/shibboleth/sp-key.key',
   $sp_cert                = undef,
   $sp_key                 = undef,
 ) {
@@ -209,6 +209,18 @@ class fstep::proxy (
       {
         'provider'              => 'location',
         'path'                  => $real_context_path_resto,
+        'auth_type'             => 'shibboleth',
+        'shib_use_headers'      => 'On',
+        'shib_request_settings' => { 'requireSession' => '1' },
+        'custom_fragment'       => $::operatingsystemmajrelease ? {
+          '6'     => 'ShibCompatWith24 On',
+          default => ''
+       },
+        'auth_require'          => 'shibboleth',
+      },
+      {
+        'provider'              => 'location',
+        'path'                  => 'gui',
         'auth_type'             => 'shibboleth',
         'shib_use_headers'      => 'On',
         'shib_request_settings' => { 'requireSession' => '1' },
