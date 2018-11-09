@@ -17,7 +17,7 @@ class fstep::proxy::shibboleth (
   $session_timeout                  = 3600,
   $session_check_address            = false,
   $session_consistent_address       = false,
-  $support_contact                  = 'fs-tep_support@esa.int',
+  $support_contact                  = 'support@foodsecurity-tep.net',
   $idp_id                           = 'https://eo-sso-idp.eo.esa.int/shibboleth',
   $idp_scope                        = 'esa.int',
   $shib_xml_custom_tags             = '',
