@@ -18,7 +18,9 @@ class fstep::proxy (
   $context_path_analyst   = undef,
   $context_path_broker    = undef,
   
-
+  $foodsecurity_tep_eo_esa_int_tls_cert_path = '/etc/pki/tls/certs/foodsecurity-tep.eo.esa.int.crt',
+  $foodsecurity_tep_eo_esa_int_tls_key_path = '/etc/pki/tls/private/foodsecurity-tep.eo.esa.int.key',
+  
   $tls_cert_path          = '/etc/pki/tls/certs/fstep_portal.crt',
   $tls_chain_path         = '/etc/pki/tls/certs/fstep_portal.chain.crt',
   $tls_key_path           = '/etc/pki/tls/private/fstep_portal.key',
@@ -182,6 +184,23 @@ class fstep::proxy (
       group   => 'shibd',
       content => $sp_key,
     }
+    
+    # add the SSO certificate (which may be different than the portal one)
+    file { $foodsecurity_tep_eo_esa_int_tls_cert_path:
+      ensure  => present,
+      mode    => '0644',
+      owner   => 'root',
+      group   => 'root',
+      content => $sp_cert,
+    }
+
+    file { $foodsecurity_tep_eo_esa_int_tls_key_path:
+      ensure  => present,
+      mode    => '0400',
+      owner   => 'root',
+      group   => 'root',
+      content => $sp_key,
+    }
 
     # Add the /Shibboleth.sso SP callback location, enable the minimal support for the root, and add secured paths
     $directories = concat([
@@ -193,6 +212,18 @@ class fstep::proxy (
       {
         'provider'   => 'location',
         'path'       => '/config'
+      },
+      {
+        'provider'              => 'location',
+        'path'                  => '/',
+        'auth_type'             => 'shibboleth',
+        'shib_use_headers'      => 'On',
+        'shib_request_settings' => { 'requireSession' => '0' },
+        'custom_fragment'       => $::operatingsystemmajrelease ? {
+          '6'     => 'ShibCompatWith24 On',
+          default => '',
+      },
+        'auth_require'          => 'shibboleth',
       },
       {
         'provider'              => 'location',
@@ -369,6 +400,23 @@ class fstep::proxy (
       proxy_pass       => $proxy_pass,
       proxy_pass_match => $proxy_pass_match,
       *                => $default_proxy_config,
+    }
+    apache::vhost { "redirect foodsecurity-tep.eo.esa.int":
+      servername      => 'foodsecurity-tep.eo.esa.int',
+      port            => '443',
+      docroot         => '/var/www/redirect',
+      redirect_status => 'permanent',
+      redirect_dest   => "https://${vhost_name}/",
+      ssl              => true,
+      ssl_cert         => $foodsecurity_tep_eo_esa_int_tls_cert_path,
+      ssl_key          => $foodsecurity_tep_eo_esa_int_tls_key_path
+    }
+    apache::vhost { "redirect foodsecurity-tep.eo.esa.int non-ssl":
+      servername      => 'foodsecurity-tep.eo.esa.int',
+      port            => '80',
+      docroot         => '/var/www/redirect',
+      redirect_status => 'permanent',
+      redirect_dest   => "https://${vhost_name}/",
     }
   } else {
     apache::vhost { $vhost_name:
