@@ -49,6 +49,10 @@ class fstep::proxy (
         rewrite_rule => ['^/app$ /app/ [R]']
       },
       {
+        rewrite_cond => ['%{HTTP:UPGRADE} ^WebSocket$ [NC]', '%{HTTP:CONNECTION} ^Upgrade$ [NC]'],
+        rewrite_rule => ["^/gui/(.*)  ws://${fstep::globals::default_gui_hostname}/gui/\$1 [P]"]
+      },
+      {
         # default rewrite requested by ESA scan
         rewrite_cond => ['%{REQUEST_METHOD} ^(TRACE|TRACK)'],
         rewrite_rule => ['.* - [F]']
@@ -138,7 +142,7 @@ class fstep::proxy (
   $default_proxy_pass_match = [
     {
       'path'   => '^/gui/(.*)$',
-      'url'    => "http://${fstep::globals::default_gui_hostname}\$1",
+      'url'    => "http://${fstep::globals::default_gui_hostname}",
       'params' => { 'retry' => '0' }
     }
   ]
