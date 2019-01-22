@@ -38,6 +38,7 @@ class fstep::proxy (
   ensure_packages(['apr-util-pgsql'])
   include ::apache::mod::headers
   include ::apache::mod::proxy
+  include ::apache::mod::proxy_wstunnel
   include ::apache::mod::rewrite
 
   $default_proxy_config = {
