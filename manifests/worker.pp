@@ -48,6 +48,7 @@ class fstep::worker (
   # User and group are set up by the RPM if not included here
   contain ::fstep::common::user
   contain ::fstep::common::docker
+  contain ::fstep::worker::privileges
 
   $real_application_port = pick($application_port, $fstep::globals::worker_application_port)
   $real_grpc_port = pick($grpc_port, $fstep::globals::worker_grpc_port)
