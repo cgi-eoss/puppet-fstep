@@ -120,7 +120,7 @@ class fstep::globals (
   
   # API Proxy config
   $fstep_db_v2_api_keys_table= 'keytable',
-  $fstep_db_v2_api_user_table= 'usertable',
+  $fstep_db_v2_api_users_table= 'usertable',
   $fstep_db_v2_api_keys_reader_username= 'username',
   $fstep_db_v2_api_keys_reader_password= 'password',
   $proxy_dbd_db= 'fstepdb',
