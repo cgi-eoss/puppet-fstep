@@ -10,6 +10,9 @@ class fstep::db::postgresql (
   $db_resto_su_username = $fstep::globals::fstep_db_resto_su_username,
   $db_resto_su_password = $fstep::globals::fstep_db_resto_su_password,
 
+  $db_geoserver_name     = $fstep::globals::fstep_db_geoserver_name,
+  $db_geoserver_username = $fstep::globals::fstep_db_geoserver_username,
+  $db_geoserver_password = $fstep::globals::fstep_db_geoserver_password,
   $db_zoo_name          = $fstep::globals::fstep_db_zoo_name,
   $db_zoo_username      = $fstep::globals::fstep_db_zoo_username,
   $db_zoo_password      = $fstep::globals::fstep_db_zoo_password,
@@ -42,6 +45,7 @@ class fstep::db::postgresql (
       # Access to resto db only required for fstep-resto
       "host ${db_resto_name} ${db_resto_username} ${fstep::globals::resto_ip}/32 md5",
       "host ${db_resto_name} ${db_resto_su_username} ${fstep::globals::resto_ip}/32 md5",
+      "host ${db_geoserver_name} ${db_geoserver_username} ${fstep::globals::geoserver_ip} md5",
       # Access to zoo db only required for fs-tep-wps
       "host ${db_zoo_name} ${db_zoo_username} ${fstep::globals::wps_ip}/32 md5",
       "host ${db_v2_name} ${db_v2_api_keys_reader_username} ${fstep::globals::proxy_ip}/32 md5"
@@ -78,6 +82,12 @@ class fstep::db::postgresql (
     password => postgresql_password($db_resto_username, $db_resto_password),
     grant    => 'ALL',
   }
+  ::postgresql::server::db { 'fstepdb_geoserver':
+    dbname   => $db_geoserver_name,
+    user     => $db_geoserver_username,
+    password => postgresql_password($db_geoserver_username, $db_geoserver_password),
+    grant    => 'ALL',
+  }
   ::postgresql::server::role { 'fstepdb_resto_admin':
     username      => $db_resto_su_username,
     password_hash => postgresql_password($db_resto_su_username, $db_resto_su_password),
@@ -91,6 +101,12 @@ class fstep::db::postgresql (
     user     => $db_zoo_username,
     password => postgresql_password($db_zoo_username, $db_zoo_password),
     grant    => 'ALL',
+  }
+  
+  ::postgresql::server::extension { 'fstepdb_geoserver_postgis':
+    database => $db_geoserver_name,
+    ensure => 'present',
+    extension => 'postgis'
   }
 
   ::postgresql::server::role { 'fstepdb_apikeys':
