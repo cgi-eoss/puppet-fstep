@@ -22,12 +22,16 @@ class fstep::geoserver (
   $csw_plugin             = 'geoserver-2.12.1-csw-plugin',
   $wcs_eo_plugin          = 'geoserver-2.12.1-wcs2_0-eo-plugin',
   $wps_plugin             = 'geoserver-2.12.1-wps-plugin',
+  $importer_plugin             = 'geoserver-2.12.1-importer-plugin',
+  
 
   $ncwms_download_url     = 'http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-ncwms-plugin.zip',
   $wmts_download_url      = 'http://ares.boundlessgeo.com/geoserver/2.12.x/community-latest/geoserver-2.12-SNAPSHOT-wmts-multi-dimensional-plugin.zip',
   $csw_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-csw-plugin.zip',
   $wcs_eo_download_url    = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wcs2_0-eo-plugin.zip',
-  $wps_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wps-plugin.zip'
+  $wps_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-wps-plugin.zip',
+  $importer_download_url       = 'http://sourceforge.net/projects/geoserver/files/GeoServer/2.12.1/extensions/geoserver-2.12.1-importer-plugin.zip',
+  
 ) {
 
   require ::fstep::globals
@@ -163,6 +167,15 @@ END
   archive { $wps_plugin:
     path          => "${user_home}/${wps_plugin}.zip",
     source        => $wps_download_url,
+    user          => $user,
+    extract       => true,
+    extract_path  => $plugins_dir,
+    require       => [User[$user], Package['unzip']],
+  }
+  
+  archive { $importer_plugin:
+    path          => "${user_home}/${importer_plugin}.zip",
+    source        => $importer_download_url,
     user          => $user,
     extract       => true,
     extract_path  => $plugins_dir,
