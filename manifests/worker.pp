@@ -30,6 +30,7 @@ class fstep::worker (
   $cache_maxweight          = 1024,
   $cache_dir                = 'dl',
   $jobs_dir                 = 'jobs',
+  $updates_broker_dir       = 'updates-broker',
 
   $ipt_auth_endpoint        = 'https://finder.eocloud.eu/resto/api/authidentity',
   # These are not undef so they're not mandatory parameters, but must be set correctly if IPT downloads are required
@@ -78,6 +79,15 @@ class fstep::worker (
     ensure  => directory,
     owner   => $fstep::globals::user,
     group   => $fstep::globals::group,
+    mode    => '755',
+    recurse => false,
+    require => File[$fstep::common::datadir::data_basedir],
+  }
+
+   file { ["${fstep::common::datadir::data_basedir}/${updates_broker_dir}"]:
+    ensure  => directory,
+    owner   => 999,
+    group   => 999,
     mode    => '755',
     recurse => false,
     require => File[$fstep::common::datadir::data_basedir],
@@ -160,4 +170,14 @@ class fstep::worker (
     volumes          => ["$traefik_config_file:/etc/traefik/traefik.toml"],
     require    => [File[$traefik_config_file]]
   }
+
+  docker::run { 'updates-broker':
+    image   => 'rmohr/activemq:5.14.5',
+    ports => ['8161:8161', '61616:61616'],
+    command => '/bin/sh -c "ACTIVEMQ_OPTS=-Dorg.apache.activemq.SERIALIZABLE_PACKAGES=shadow.dockerjava,java.util,java.lang bin/activemq console"',
+    extra_parameters => [ '--restart=always'],
+    volumes          => ["${fstep::common::datadir::data_basedir}/${updates_broker_dir}:/opt/activemq/data"],
+    require    => [File["${fstep::common::datadir::data_basedir}/${updates_broker_dir}"]]
+  }
+
 }
