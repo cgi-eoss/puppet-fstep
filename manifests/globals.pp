@@ -22,7 +22,7 @@ class fstep::globals (
   # System user
   $user                             = 'fstep',
   $group                            = 'fstep',
-
+  $admin_user                       = 'eouser',
   # Hostnames and IPs for components
   $db_hostname                      = 'fstep-db',
   $db_ip                            = '192.168.0.1',
