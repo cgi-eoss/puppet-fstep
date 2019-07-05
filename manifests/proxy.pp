@@ -32,6 +32,7 @@ class fstep::proxy (
   $sp_key_path            = '/etc/shibboleth/sp-key.key',
   $sp_cert                = undef,
   $sp_key                 = undef,
+  $create_tls_files		  = false
 ) {
 
   require ::fstep::globals
@@ -345,36 +346,41 @@ class fstep::proxy (
 
   if $enable_ssl {
     unless ($tls_cert and $tls_key) {
-      fail("fstep::proxy requres \$tls_cert and \$tls_key to be set if \$enable_ssl is true")
+      fail("fstep::proxy requires \$tls_cert and \$tls_key to be set if \$enable_ssl is true")
     }
 
-    file { $tls_cert_path:
-      ensure  => present,
-      mode    => '0644',
-      owner   => 'root',
-      group   => 'root',
-      content => $tls_cert,
+	if $create_tls_files { 
+	    file { $tls_cert_path:
+	      ensure  => present,
+	      mode    => '0644',
+	      owner   => 'root',
+	      group   => 'root',
+	      content => $tls_cert,
+	    }
+	
+	    if $tls_chain {
+	      file { $tls_chain_path:
+	        ensure  => present,
+	        mode    => '0644',
+	        owner   => 'root',
+	        group   => 'root',
+	        content => $tls_chain,
+	      }
+	      $real_tls_chain_path = $tls_chain_path
+	    } else {
+	      $real_tls_chain_path = undef
+	    }
+	
+	    file { $tls_key_path:
+	      ensure  => present,
+	      mode    => '0600',
+	      owner   => 'root',
+	      group   => 'root',
+	      content => $tls_key,
+	    }
     }
-
-    if $tls_chain {
-      file { $tls_chain_path:
-        ensure  => present,
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-        content => $tls_chain,
-      }
-      $real_tls_chain_path = $tls_chain_path
-    } else {
-      $real_tls_chain_path = undef
-    }
-
-    file { $tls_key_path:
-      ensure  => present,
-      mode    => '0600',
-      owner   => 'root',
-      group   => 'root',
-      content => $tls_key,
+    else{
+    	$real_tls_chain_path = $tls_chain_path
     }
 
     apache::vhost { "redirect ${vhost_name} non-ssl":
@@ -391,6 +397,7 @@ class fstep::proxy (
       ssl_cert         => $tls_cert_path,
       ssl_chain        => $real_tls_chain_path,
       ssl_key          => $tls_key_path,
+	  	
       default_vhost    => true,
       shib_compat_valid_user => 'On',
       request_headers  => [
@@ -400,23 +407,6 @@ class fstep::proxy (
       proxy_pass       => $proxy_pass,
       proxy_pass_match => $proxy_pass_match,
       *                => $default_proxy_config,
-    }
-    apache::vhost { "redirect foodsecurity-tep.eo.esa.int":
-      servername      => 'foodsecurity-tep.eo.esa.int',
-      port            => '443',
-      docroot         => '/var/www/redirect',
-      redirect_status => 'permanent',
-      redirect_dest   => "https://${vhost_name}/",
-      ssl              => true,
-      ssl_cert         => $foodsecurity_tep_eo_esa_int_tls_cert_path,
-      ssl_key          => $foodsecurity_tep_eo_esa_int_tls_key_path
-    }
-    apache::vhost { "redirect foodsecurity-tep.eo.esa.int non-ssl":
-      servername      => 'foodsecurity-tep.eo.esa.int',
-      port            => '80',
-      docroot         => '/var/www/redirect',
-      redirect_status => 'permanent',
-      redirect_dest   => "https://${vhost_name}/",
     }
   } else {
     apache::vhost { $vhost_name:
