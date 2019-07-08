@@ -12,6 +12,7 @@ class fstep::broker (
   class { 'activemq':
     install              => 'source',
     version              => "${activemq_version}",
+    install_source       => "http://archive.apache.org/dist/activemq/${activemq_version}/apache-activemq-${activemq_version}-bin.zip",
     install_dependencies => false,
     install_destination  => '/opt',      # Default value
     create_user          => true,        # Default value
