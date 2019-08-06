@@ -17,6 +17,7 @@ class fstep::globals (
   $context_path_eureka              = '/eureka',
   $context_path_analyst             = '/analyst',
   $context_path_broker             = '/broker',
+  $context_path_user_manual        = '/user-manual',
   
   # System user
   $user                             = 'fstep',
@@ -35,6 +36,7 @@ class fstep::globals (
   $broker_hostname                  = 'fstep-broker',
   $default_gui_hostname             = 'fstep-worker',
   $ui_hostname                      = 'fstep-ui',
+  $usermanual_hostname              = 'fstep-user-manual',
   $kubernetes_master_hostname       = 'fskubermaster',
 
   $hosts_override                   = { },
