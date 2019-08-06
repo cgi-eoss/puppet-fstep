@@ -42,11 +42,19 @@ class fstep::webapp (
     }),
     require => Package['fs-tep-portal'],
   }
+  
+  $directories = [
+      {
+        'path'       => $app_path,
+         'options'       => 'FollowSymLinks MultiViews',
+      }
+  ]
 
   ::apache::vhost { 'fstep-webapp':
     port       => '80',
     servername => 'fstep-webapp',
     docroot    => $app_path,
+    directories => $directories
   }
 
 }
