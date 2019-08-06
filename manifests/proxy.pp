@@ -16,6 +16,7 @@ class fstep::proxy (
   $context_path_eureka    = undef,
   $context_path_gui       = undef,
   $context_path_analyst   = undef,
+  $context_path_user_manual = undef,
   $context_path_broker    = undef,
   
   $foodsecurity_tep_eo_esa_int_tls_cert_path = '/etc/pki/tls/certs/foodsecurity-tep.eo.esa.int.crt',
@@ -76,6 +77,7 @@ class fstep::proxy (
   $real_context_path_logs = pick($context_path_logs, $fstep::globals::context_path_logs)
   $real_context_path_eureka = pick($context_path_eureka, $fstep::globals::context_path_eureka)
   $real_context_path_analyst = pick($context_path_analyst, $fstep::globals::context_path_analyst)
+  $real_context_path_user_manual = pick($context_path_user_manual, $fstep::globals::context_path_user_manual)
   $real_context_path_broker = pick($context_path_broker, $fstep::globals::context_path_broker)
 
   # Directory/Location directives - cannot be an empty array...
@@ -146,6 +148,11 @@ class fstep::proxy (
     {
       'path'   => $real_context_path_analyst,
       'url'    => "http://${fstep::globals::ui_hostname}/analyst",
+      'params' => { 'retry' => '0' }
+    },
+    {
+      'path'   => $real_context_path_user_manual,
+      'url'    => "http://${fstep::globals::usermanual_hostname}/user-manual",
       'params' => { 'retry' => '0' }
     },
     {

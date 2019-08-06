@@ -18,6 +18,7 @@ class fstep::globals (
   $context_path_eureka              = '/eureka',
   $context_path_analyst             = '/analyst',
   $context_path_broker             = '/broker',
+  $context_path_user_manual        = '/user-manual',
   
   # System user
   $user                             = 'fstep',
@@ -47,6 +48,7 @@ class fstep::globals (
   $default_gui_hostname             = 'fstep-worker',
   $default_gui_ip                   = '192.168.0.11',
   $ui_hostname                      = 'fstep-ui',
+  $usermanual_hostname              = 'fstep-user-manual',
   $ui_ip                            = '192.168.0.12',
   $geoserver_contrib_hostname       = 'fstep-geoserver-contrib',
   $geoserver_contrib_ip             = '192.168.0.13',
