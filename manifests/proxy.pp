@@ -29,7 +29,7 @@ class fstep::proxy (
   $tls_chain              = undef,
   $tls_key                = undef,
 
-  $sp_cert_path           = '/etc/shibboleth/sp-cert.cert',
+  $sp_cert_path           = '/etc/shibboleth/sp-cert.crt',
   $sp_key_path            = '/etc/shibboleth/sp-key.key',
   $sp_cert                = undef,
   $sp_key                 = undef,
