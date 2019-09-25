@@ -19,6 +19,7 @@ class fstep::monitor::graylog_server (
 
   class { ::mongodb::globals:
     manage_package_repo => true,
+    version             => '3.6'
   } ->
     class { ::mongodb::server:
       bind_ip => [$db_bind_ip],
