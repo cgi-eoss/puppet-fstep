@@ -45,7 +45,7 @@ class fstep::db::postgresql (
       # Access to resto db only required for fstep-resto
       "host ${db_resto_name} ${db_resto_username} ${fstep::globals::resto_ip}/32 md5",
       "host ${db_resto_name} ${db_resto_su_username} ${fstep::globals::resto_ip}/32 md5",
-      "host ${db_geoserver_name} ${db_geoserver_username} ${fstep::globals::geoserver_ip} md5",
+      "host ${db_geoserver_name} ${db_geoserver_username} ${fstep::globals::geoserver_ip}/32 md5",
       # Access to zoo db only required for fs-tep-wps
       "host ${db_zoo_name} ${db_zoo_username} ${fstep::globals::wps_ip}/32 md5",
       "host ${db_v2_name} ${db_v2_api_keys_reader_username} ${fstep::globals::proxy_ip}/32 md5"
